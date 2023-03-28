@@ -5,7 +5,7 @@ export const Header = () => {
 	const [state, setState] = useState();
 	return (
 		<>
-			<h1 className='header'>Helloooooooooooa</h1>
+			<h1 className='header'>Hello</h1>
 		</>
 	);
 };
