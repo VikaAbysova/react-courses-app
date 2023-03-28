@@ -1,9 +1,25 @@
-import React from 'react';
-import './App.scss';
-import { Header } from './components/Header';
+import './app.scss';
+
+import React, { useState } from 'react';
+
+import { Header } from './components/Header/Header';
+import { Courses } from './components/Courses/Courses';
+import { CreateCourse } from './components/CreateCourse/CreateCourse';
 
 function App() {
-	return <Header />;
+	const [showCourses, setShowCourses] = useState(true);
+
+	return (
+		<>
+			<Header />
+			{showCourses && (
+				<Courses changeShowCourses={() => setShowCourses(false)} />
+			)}
+			{!showCourses && (
+				<CreateCourse changeShowCourses={() => setShowCourses(true)} />
+			)}
+		</>
+	);
 }
 
 export default App;

@@ -1,0 +1,114 @@
+.createCourse > div {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.creating-course {
+    padding: 30px;
+    border: 1px solid lightskyblue;
+    background-color: rgb(251, 246, 246);
+}
+
+#courseTitle {
+    min-width: 500px;
+}
+
+.creating-course textarea {
+    min-width: 100%;
+    padding: 10px 20px;
+    outline: none;
+    border: 1px solid rgb(213, 213, 54);
+    font-size: inherit;
+    font-family: inherit;
+    margin-top: 10px;
+}
+
+.creating-course .creating-bar{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.creating-course textarea:invalid {
+    background-color: rgb(244, 211, 211);
+}
+
+.creating-course input:invalid  {
+    background-color: rgb(244, 211, 211);
+}
+
+.creating-course input {
+    margin-top: 10px;
+}
+
+.creating-bar {
+    margin-bottom: 30px;
+}
+
+.creating-bar :first-child {
+    display: flex;
+    flex-direction: column;
+}
+
+.creating-course label {
+    font-size: large;
+}
+
+.creating-course h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.authors-adding button {
+    margin: 10px auto;
+    display: block;
+}
+
+.authors-adding, 
+.authors, 
+.course-authors, 
+.course-duration {
+    min-width: 45%;
+    min-height: 20vw;
+}
+
+.course-duration p {
+font-size: 1.6rem;
+margin-top: 50px;
+}
+
+.course-duration p span {
+    font-weight: bold;
+}
+
+
+.authors-adding input, .course-duration input {
+    width: 100%;
+}
+
+.authors-data {
+    border: 1px solid rgb(75, 107, 139);
+    margin-top: 15px;
+    padding: 30px ;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: center;
+}
+
+.authors-list {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    margin-top: 5px;
+    gap: 30px;
+}
+
+.authors-list p {
+    min-width: 40%;
+}
+
+.disapear {
+    display: none;
+}

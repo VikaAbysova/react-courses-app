@@ -1,0 +1,56 @@
+.course-card {
+  border: 1px solid lightskyblue;
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+  margin: 30px;
+  padding: 20px;
+  background-color: rgb(251, 246, 246);
+}
+
+.course-card > div {
+  margin-top: 10px;
+  width: 30%;
+}
+
+.course-card div p {
+  margin-bottom: 5px;
+}
+
+.course-card section {
+  width: 60%;
+}
+
+.course-card button {
+  margin-top: 10px;
+}
+
+.course-card span {
+  font-weight: bold;
+}
+
+.course-card h1 {
+  margin-bottom: 10px;
+  font-size: 2rem;
+}
+
+.course-card .authors-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.course-card .icon {
+  /* margin-right: 10px; */
+  height: 15px;
+  width: 17px;
+  text-align: center;
+}
+
+.course-card svg {
+  margin: 0px ;
+}
+
+.course-card button {
+  margin-right: 10px;
+}
