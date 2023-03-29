@@ -2,6 +2,8 @@ import './input.scss';
 
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 export const Input = ({
 	labelText,
 	placeholderText,
@@ -29,4 +31,16 @@ export const Input = ({
 			/>
 		</>
 	);
+};
+
+Input.propTypes = {
+	labelText: PropTypes.string,
+	placeholderText: PropTypes.string,
+	onChange: PropTypes.func,
+	inputType: PropTypes.oneOf(['text', 'number']),
+	inputName: PropTypes.string,
+	inputValue: PropTypes.string,
+	required: PropTypes.bool,
+	minLength: PropTypes.string,
+	min: PropTypes.string,
 };

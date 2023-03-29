@@ -2,6 +2,8 @@ import './searchBar.scss';
 
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 import { useState } from 'react';
 
 import { Button } from '../../../../common/Button/Button';
@@ -41,4 +43,8 @@ export const SearchBar = ({ changeCourses }) => {
 			<Button text={BUTTON_TEXT[1]} onClick={searchCourse} />
 		</form>
 	);
+};
+
+SearchBar.propTypes = {
+	changeCourses: PropTypes.func,
 };

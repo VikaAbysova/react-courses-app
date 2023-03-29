@@ -3,7 +3,10 @@
     "browser": true,
     "es2021": true
   },
-  "extends": ["prettier"],
+  "extends": ["prettier",
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -25,6 +28,7 @@
         "endOfLine": "auto",
         "max-len": ["error", { "code": 80 }]
       }
-    ]
+    ],
+      "react/prop-types": ["error"]
   }
 }

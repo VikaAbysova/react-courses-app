@@ -2,6 +2,8 @@ import './courses.scss';
 
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 import { useState } from 'react';
 
 import {
@@ -13,7 +15,6 @@ import {
 import { CourseCard } from './components/CourseCard/CourseCard';
 import { SearchBar } from './components/SearchBar/SearchBar';
 import { Button } from '../../common/Button/Button';
-import { CreateCourse } from '../CreateCourse/CreateCourse';
 
 export const Courses = ({ changeShowCourses }) => {
 	const [coursesList, setCoursesList] = useState(mockedCoursesList);
@@ -40,4 +41,8 @@ export const Courses = ({ changeShowCourses }) => {
 			</main>
 		</>
 	);
+};
+
+Courses.propTypes = {
+	changeShowCourses: PropTypes.func,
 };

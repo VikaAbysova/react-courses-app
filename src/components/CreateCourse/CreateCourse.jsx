@@ -2,6 +2,8 @@ import './createCourse.scss';
 
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 import { useState } from 'react';
 
 import { Input } from '../../common/Input/Input';
@@ -23,7 +25,6 @@ export const CreateCourse = ({ changeShowCourses }) => {
 	const [durationValue, setDurationValue] = useState('');
 	const [authorList, setAuthorList] = useState(mockedAuthorsList);
 	const [author, setAuthor] = useState([]);
-	// const [newCourses, setNewCourses] = useState([mockedCoursesList]);
 
 	let keyValue = generateId();
 
@@ -106,11 +107,9 @@ export const CreateCourse = ({ changeShowCourses }) => {
 			duration: durationValue,
 			authors: author.map((aut) => aut.id),
 		};
-		// const newCourseList = [...newCourse];
 
 		mockedCoursesList.push(newCourse);
 		changeShowCourses();
-		// setNewCourses([...newCourses, ...newCourseList]);
 	};
 
 	return (
@@ -222,4 +221,8 @@ export const CreateCourse = ({ changeShowCourses }) => {
 			</form>
 		</article>
 	);
+};
+
+CreateCourse.propTypes = {
+	changeShowCourses: PropTypes.func,
 };
