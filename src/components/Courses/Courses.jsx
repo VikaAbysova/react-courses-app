@@ -16,6 +16,8 @@ import { CourseCard } from './components/CourseCard/CourseCard';
 import { SearchBar } from './components/SearchBar/SearchBar';
 import { Button } from '../../common/Button/Button';
 
+import { pipeDuration } from '../../helpers/pipeDuration';
+
 export const Courses = ({ changeShowCourses }) => {
 	const [coursesList, setCoursesList] = useState(mockedCoursesList);
 
@@ -35,6 +37,7 @@ export const Courses = ({ changeShowCourses }) => {
 							key={course.id}
 							{...course}
 							authorsNames={authorsNames}
+							duration={pipeDuration(course.duration)}
 						/>
 					);
 				})}

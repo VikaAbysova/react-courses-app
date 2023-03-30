@@ -42,5 +42,7 @@ Input.propTypes = {
 	inputValue: PropTypes.string,
 	required: PropTypes.bool,
 	minLength: PropTypes.string,
-	min: PropTypes.string,
+	min: PropTypes.number,
 };
+
+// export default Input;

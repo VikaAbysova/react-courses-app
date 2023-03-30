@@ -9,7 +9,6 @@ import { Button } from '../../../../common/Button/Button';
 import { BUTTON_TEXT } from '../../../../contstants';
 
 import { dateGenerator } from '../../../../helpers/dateGeneratop';
-import { pipeDuration } from '../../../../helpers/pipeDuration';
 
 export const CourseCard = ({
 	title,
@@ -29,7 +28,7 @@ export const CourseCard = ({
 					<span>Authors:</span> {authorsNames.join(', ')}
 				</p>
 				<p>
-					<span>Duration:</span> {pipeDuration(duration)} hours
+					<span>Duration:</span> {duration} hours
 				</p>
 				<p>
 					<span>Created:</span> {dateGenerator(creationDate)}
@@ -44,6 +43,6 @@ CourseCard.propTypes = {
 	title: PropTypes.string,
 	description: PropTypes.string,
 	creationDate: PropTypes.string,
-	duration: PropTypes.number,
+	duration: PropTypes.string,
 	authorsNames: PropTypes.arrayOf(PropTypes.string),
 };
