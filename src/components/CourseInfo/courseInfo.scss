@@ -1,0 +1,42 @@
+.course-info {
+    width: 100%;
+    height: 100%;
+    padding: 20px 20px 190px 20px;
+    border: 1px solid lightskyblue;
+    /* margin-top: 30px; */
+}
+
+.course-info button {
+    border: none;
+    /* margin: 20px; */
+}
+
+.description {
+    display: flex;
+    justify-content: flex-start;
+    margin: 50px 70px 30px 30px;
+    gap:  10%;
+    line-height: 2rem;
+}
+
+.course-info h1 {
+    text-align: center;
+    margin: 30px;
+    font-size: 3rem;
+}
+
+.description > p {
+    width: 50%;
+}
+
+.description div {
+    max-width: fit-content
+}
+
+span {
+    font-weight: bold;
+}
+
+pre {
+    font-family: inherit;
+}

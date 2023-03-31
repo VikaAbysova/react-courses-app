@@ -5,11 +5,13 @@
     justify-content: space-between;
     padding: 20px 30px;
     margin-bottom: 20px;
+    background-color: rgb(251, 246, 246);
+    position: sticky;
+    top: 0;
 }
 
 .header p {
     font-weight: bold;
-    /* font-size: 0.70rem; */
     margin: 30px;
 }
 

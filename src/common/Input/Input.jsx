@@ -37,7 +37,7 @@ Input.propTypes = {
 	labelText: PropTypes.string,
 	placeholderText: PropTypes.string,
 	onChange: PropTypes.func,
-	inputType: PropTypes.oneOf(['text', 'number']),
+	inputType: PropTypes.oneOf(['text', 'number', 'email', 'password']),
 	inputName: PropTypes.string,
 	inputValue: PropTypes.string,
 	required: PropTypes.bool,

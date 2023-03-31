@@ -1,10 +1,8 @@
 import './courses.scss';
 
 import React from 'react';
-
-import PropTypes from 'prop-types';
-
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import {
 	BUTTON_TEXT,
@@ -18,15 +16,19 @@ import { Button } from '../../common/Button/Button';
 
 import { pipeDuration } from '../../helpers/pipeDuration';
 
-export const Courses = ({ changeShowCourses }) => {
+export const Courses = () => {
 	const [coursesList, setCoursesList] = useState(mockedCoursesList);
+	const navigate = useNavigate();
 
 	return (
 		<>
 			<main className='courses'>
 				<div className='actions'>
 					<SearchBar changeCourses={setCoursesList} />
-					<Button text={BUTTON_TEXT[2]} onClick={changeShowCourses} />
+					<Button
+						text={BUTTON_TEXT[2]}
+						onClick={() => navigate('/courses/add')}
+					/>
 				</div>
 				{coursesList.map((course) => {
 					const authorsNames = course.authors.map(
@@ -44,8 +46,4 @@ export const Courses = ({ changeShowCourses }) => {
 			</main>
 		</>
 	);
-};
-
-Courses.propTypes = {
-	changeShowCourses: PropTypes.func,
 };

@@ -1,10 +1,8 @@
 import './createCourse.scss';
 
 import React from 'react';
-
-import PropTypes from 'prop-types';
-
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import { Input } from '../../common/Input/Input';
 import { Button } from '../../common/Button/Button';
@@ -18,13 +16,15 @@ import {
 
 import { pipeDuration } from '../../helpers/pipeDuration';
 
-export const CreateCourse = ({ changeShowCourses }) => {
+export const CreateCourse = () => {
 	const [titleValue, setTitleValue] = useState('');
 	const [descriptionValue, setDescriptionValue] = useState('');
 	const [nameValue, setNameValue] = useState('');
 	const [durationValue, setDurationValue] = useState('');
 	const [authorList, setAuthorList] = useState(mockedAuthorsList);
 	const [author, setAuthor] = useState([]);
+
+	const navigate = useNavigate();
 
 	let keyValue = generateId();
 
@@ -107,9 +107,8 @@ export const CreateCourse = ({ changeShowCourses }) => {
 			duration: durationValue,
 			authors: author.map((aut) => aut.id),
 		};
-
 		mockedCoursesList.push(newCourse);
-		changeShowCourses();
+		navigate('/courses');
 	};
 
 	return (
@@ -221,8 +220,4 @@ export const CreateCourse = ({ changeShowCourses }) => {
 			</form>
 		</article>
 	);
-};
-
-CreateCourse.propTypes = {
-	changeShowCourses: PropTypes.func,
 };
