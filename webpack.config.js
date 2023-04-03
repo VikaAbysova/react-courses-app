@@ -1,9 +1,19 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { devServer } = require('./webpack.dev-server');
-const { resolve } = require('./webpack.resolve');
-const { moduleWebpack } = require('./webpack.module');
+const devServerWebpack = require('./webpack.dev-server');
+const resolveWebpack = require('./webpack.resolve');
+const moduleWebpack = require('./webpack.module');
+// const { default: devServerWebpack } = require('./webpack.dev-server');
+// const { default: resolveWebpack } = require('./webpack.resolve').default;
+// const { default: moduleWebpack } = require('./webpack.module');
+// const { default: devServer } = require('./webpack.dev-server');
+// const { default: resolve } = require('./webpack.resolve');
+// const { default: moduleWebpack } = require('./webpack.module');
+// import devServer from './webpack.dev-server.js';
+// import './webpack.dev-server.js';
+// import './webpack.module.js';
+// import './webpack.resolve.js';
 
 module.exports = {
   output: {
@@ -11,8 +21,8 @@ module.exports = {
     publicPath: '/',
     filename: 'index.bundle.js',
   },
-  devServer: devServer,
-  resolve: resolve,
+  devServer: devServerWebpack,
+  resolve: resolveWebpack,
   module: moduleWebpack,
   plugins: [
     new MiniCssExtractPlugin(),

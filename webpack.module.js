@@ -1,4 +1,5 @@
-export const moduleWebpack = {
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const moduleWebpack = {
   rules: [
     {
       test: /\.(js|jsx)$/,
@@ -21,3 +22,5 @@ export const moduleWebpack = {
     },
   ],
 };
+
+module.exports = moduleWebpack;
