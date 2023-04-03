@@ -7,26 +7,33 @@ import { useNavigate } from 'react-router';
 import { Input } from '../../common/Input/Input';
 import { Button } from '../../common/Button/Button';
 
-import {
-	BUTTON_TEXT,
-	generateId,
-	mockedAuthorsList,
-	mockedCoursesList,
-} from '../../contstants';
+import { BUTTON_TEXT, generateId, mockedAuthorsList } from '../../contstants';
 
 import { pipeDuration } from '../../helpers/pipeDuration';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { saveCourseAction } from '../../store/courses/actionCreators';
+import { getAuthors } from '../../store/selectors';
+import { saveAuthorsAction } from '../../store/authors/actionCreators';
+
 export const CreateCourse = () => {
+	const authors = useSelector(getAuthors);
+	console.log('authors', authors);
+
 	const [titleValue, setTitleValue] = useState('');
 	const [descriptionValue, setDescriptionValue] = useState('');
 	const [nameValue, setNameValue] = useState('');
 	const [durationValue, setDurationValue] = useState('');
-	const [authorList, setAuthorList] = useState(mockedAuthorsList);
+	const [authorList, setAuthorList] = useState(authors);
 	const [author, setAuthor] = useState([]);
 
-	const navigate = useNavigate();
+	// const [newCourses, setNewCourses] = useState([mockedCoursesList]);
+	const dispatch = useDispatch();
+	// const storeCourses = store.getState().courses;
 
 	let keyValue = generateId();
+
+	const navigate = useNavigate();
 
 	const titleChange = (e) => {
 		setTitleValue(e.target.value);
@@ -45,10 +52,16 @@ export const CreateCourse = () => {
 		e.preventDefault();
 		const newAuthor = [{ id: generateId(), name: nameValue }];
 		if (nameValue.length >= 2) {
-			mockedAuthorsList.push({
-				id: generateId(),
+			// mockedAuthorsList.push({
+			// 	id: generateId(),
+			// 	name: nameValue,
+			// });
+			const authorCreated = {
 				name: nameValue,
-			});
+				id: generateId(),
+			};
+			dispatch(saveAuthorsAction(authorCreated));
+
 			if (!authorList.find((el) => el.id === newAuthor[0].id)) {
 				setAuthorList([...authorList, ...newAuthor]);
 			}
@@ -58,9 +71,7 @@ export const CreateCourse = () => {
 
 	const addAuthor = (id) => (e) => {
 		e.preventDefault();
-		const authorName = mockedAuthorsList.find(
-			(author) => author.id === id
-		).name;
+		const authorName = authors.find((author) => author.id === id).name;
 		const newAuthor = [
 			{
 				id: id,
@@ -77,9 +88,7 @@ export const CreateCourse = () => {
 	const deleteAuthor = (id) => (e) => {
 		e.preventDefault();
 		const delFilteredAuthors = author.filter((author) => author.id !== id);
-		const authorName = mockedAuthorsList.find(
-			(author) => author.id === id
-		).name;
+		const authorName = authors.find((author) => author.id === id).name;
 		const newAuthor = [
 			{
 				id: id,
@@ -98,16 +107,18 @@ export const CreateCourse = () => {
 		    Подтвердите действие на странице localhost:3000
 		    Please, fill in all fields`);
 		}
+		const newCourseList = [
+			{
+				id: generateId(),
+				title: titleValue,
+				description: descriptionValue,
+				creationDate: new Date().toLocaleDateString(),
+				duration: durationValue,
+				authors: author.map((aut) => aut.id),
+			},
+		];
 
-		const newCourse = {
-			id: generateId(),
-			title: titleValue,
-			description: descriptionValue,
-			creationDate: new Date().toLocaleDateString(),
-			duration: durationValue,
-			authors: author.map((aut) => aut.id),
-		};
-		mockedCoursesList.push(newCourse);
+		dispatch(saveCourseAction(newCourseList));
 		navigate('/courses');
 	};
 
@@ -171,7 +182,7 @@ export const CreateCourse = () => {
 					<section className='authors'>
 						<h2>Authors</h2>
 						{authorList.map((author) => {
-							keyValue++;
+							keyValue += 1;
 							return (
 								<div className='authors-list' key={keyValue}>
 									<p key={keyValue}>{author.name}</p>
@@ -203,7 +214,7 @@ export const CreateCourse = () => {
 					<section className='course-authors'>
 						<h2>Course authors</h2>
 						{author.map((author) => {
-							keyValue++;
+							keyValue += 1;
 							return (
 								<div className='authors-list' key={keyValue}>
 									<p key={keyValue}>{author.name}</p>

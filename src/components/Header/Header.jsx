@@ -4,16 +4,20 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import PropTypes from 'prop-types';
-
 import { Button } from '../../common/Button/Button';
 import { Logo } from './components/Logo/Logo';
 
 import { BUTTON_TEXT } from '../../contstants';
 
-export const Header = ({ userName }) => {
+import { useDispatch, useSelector } from 'react-redux';
+import { userLogoutAction } from '../../store/user/actionCreators';
+import { getUser } from '../../store/selectors';
+
+export const Header = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const userName = useSelector(getUser).name;
 
 	const [token, setToken] = useState(localStorage.token);
 	const showLogoutBtn =
@@ -22,6 +26,7 @@ export const Header = ({ userName }) => {
 
 	const logout = () => {
 		if (localStorage.token) {
+			dispatch(userLogoutAction());
 			localStorage.removeItem('token');
 			setToken('');
 			navigate('login');
@@ -46,8 +51,4 @@ export const Header = ({ userName }) => {
 			<Outlet />
 		</>
 	);
-};
-
-Header.propTypes = {
-	userName: PropTypes.string,
 };

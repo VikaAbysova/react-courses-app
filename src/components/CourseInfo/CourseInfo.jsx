@@ -2,21 +2,22 @@ import './courseInfo.scss';
 
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import { Button } from '../../common/Button/Button';
 
 import { dateGenerator } from '../../helpers/dateGeneratop';
 import { pipeDuration } from '../../helpers/pipeDuration';
 
-import { mockedAuthorsList, mockedCoursesList } from '../../contstants';
+import { getAuthors, getCourses } from '../../store/selectors';
 
 export const CourseInfo = () => {
 	const navigate = useNavigate();
 	const params = useParams();
+	const courses = useSelector(getCourses);
+	const authors = useSelector(getAuthors);
 
-	const showedCourse = mockedCoursesList.find(
-		(course) => course.id === params.courseId
-	);
+	const showedCourse = courses.find((course) => course.id === params.courseId);
 
 	return (
 		<section className='course-info'>
@@ -42,7 +43,7 @@ export const CourseInfo = () => {
 					<div>
 						<span>Authors:</span>
 						{showedCourse.authors.map((id) => {
-							const authorsNames = mockedAuthorsList.find(
+							const authorsNames = authors.find(
 								(author) => author.id === id
 							).name;
 							return <p key={id}>{authorsNames}</p>;

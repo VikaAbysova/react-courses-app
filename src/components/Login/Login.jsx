@@ -1,16 +1,20 @@
 import './login.scss';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Input } from '../../common/Input/Input';
 import { Button } from '../../common/Button/Button';
 
-export const Login = ({ getUserName }) => {
+import * as ApiServices from '../../store/services';
+import { useDispatch } from 'react-redux';
+import { userLoginAction } from '../../store/user/actionCreators';
+
+export const Login = () => {
 	const [data, setData] = useState({ email: '', password: '' });
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const userLogin = async (e) => {
 		e.preventDefault();
@@ -18,19 +22,17 @@ export const Login = ({ getUserName }) => {
 			email: data.email,
 			password: data.password,
 		};
-
-		const response = await fetch('http://localhost:4000/login', {
-			method: 'POST',
-			body: JSON.stringify(credentials),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
-		const result = await response.json();
+		const result = await ApiServices.loginRequest(credentials);
 
 		if (result.successful) {
+			const user = {
+				isAuth: true,
+				name: result.user.name,
+				email: result.user.email,
+				token: result.result,
+			};
 			localStorage.setItem('token', `${result.result}`);
-			getUserName(result.user.name);
+			dispatch(userLoginAction(user));
 			navigate('/courses');
 		}
 	};
@@ -69,8 +71,4 @@ export const Login = ({ getUserName }) => {
 			</form>
 		</section>
 	);
-};
-
-Login.propTypes = {
-	getUserName: PropTypes.func,
 };

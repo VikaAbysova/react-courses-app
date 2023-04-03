@@ -11,7 +11,7 @@ export const Button = ({ text, onClick, type, id }) => (
 );
 
 Button.propTypes = {
-	text: PropTypes.string,
+	text: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 	onClick: PropTypes.func,
 	type: PropTypes.oneOf(['submit', 'button']),
 	id: PropTypes.string,
