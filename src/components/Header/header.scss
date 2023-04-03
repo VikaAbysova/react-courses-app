@@ -3,18 +3,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 30px;
-    margin-bottom: 20px;
+    padding: 1rem 2rem;
 }
 
-.header p {
+.user-name {
     font-weight: bold;
-    /* font-size: 0.70rem; */
-    margin: 30px;
+    margin: 2rem;
 }
 
-.header > div {
+.header-body {
     display: flex;
-    height: 30px;
+    height: 2rem;
     align-items: center;
 }

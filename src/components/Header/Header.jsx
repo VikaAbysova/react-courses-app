@@ -1,24 +1,21 @@
+import React from 'react';
+import { Button } from 'common/Button/Button';
+import { Logo } from './components/Logo/Logo';
+import { BUTTON_TEXT } from 'contstants';
 import './header.scss';
 
-import React from 'react';
-
-import { Button } from '../../common/Button/Button';
-import { Logo } from './components/Logo/Logo';
-
-import { BUTTON_TEXT } from '../../contstants';
-
 export const Header = () => {
-	const userName = 'Viktoriya';
+  const userName = 'Viktoriya';
 
-	return (
-		<>
-			<header className='header'>
-				<Logo />
-				<div>
-					<p>{userName}</p>
-					<Button type='button' text={BUTTON_TEXT[0]} />
-				</div>
-			</header>
-		</>
-	);
+  return (
+    <>
+      <header className="header">
+        <Logo />
+        <div className="header-body">
+          <p className="user-name">{userName}</p>
+          <Button type="button" text={BUTTON_TEXT[0]} />
+        </div>
+      </header>
+    </>
+  );
 };
