@@ -13,7 +13,7 @@ export const Header = () => {
         <Logo />
         <div className="header-body">
           <p className="user-name">{userName}</p>
-          <Button type="button" text={BUTTON_TEXT[0]} />
+          <Button type="button">Logout</Button>
         </div>
       </header>
     </>

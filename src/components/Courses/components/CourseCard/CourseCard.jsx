@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'common/Button/Button';
-import { BUTTON_TEXT } from 'contstants';
 import { dateGenerator } from 'helpers/dateGeneratop';
 import './courseCard.scss';
 
@@ -28,7 +27,7 @@ export const CourseCard = ({
         <p className="information">
           <span>Created:</span> {dateGenerator(creationDate)}
         </p>
-        <Button type="button" text={BUTTON_TEXT[3]} />
+        <Button type="button">Show course</Button>
       </div>
     </article>
   );

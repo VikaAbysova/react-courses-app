@@ -123,11 +123,9 @@ export const CreateCourse = ({ changeShowCourses }) => {
             />
           </div>
           <div>
-            <Button
-              text={BUTTON_TEXT[6]}
-              type={'submit'}
-              onClick={createCourse}
-            />
+            <Button type={'submit'} onClick={createCourse}>
+              Create course
+            </Button>
           </div>
         </div>
         <label htmlFor="descriptionCourse">Description</label>
@@ -156,11 +154,9 @@ export const CreateCourse = ({ changeShowCourses }) => {
               required={true}
             />
             <br />
-            <Button
-              text={BUTTON_TEXT[4]}
-              onClick={createAuthor}
-              id={generateId()}
-            />
+            <Button onClick={createAuthor} id={generateId()}>
+              Create author
+            </Button>
           </section>
           <section className="authors">
             <h2>Authors</h2>
@@ -171,11 +167,9 @@ export const CreateCourse = ({ changeShowCourses }) => {
                   <p className="author-names" key={keyValue}>
                     {author.name}
                   </p>
-                  <Button
-                    text={BUTTON_TEXT[5]}
-                    key={author.id}
-                    onClick={addAuthor(author.id)}
-                  />
+                  <Button key={author.id} onClick={addAuthor(author.id)}>
+                    Add author
+                  </Button>
                 </div>
               );
             })}
@@ -203,11 +197,9 @@ export const CreateCourse = ({ changeShowCourses }) => {
               return (
                 <div className="authors-list" key={keyValue}>
                   <p key={keyValue}>{author.name}</p>
-                  <Button
-                    text={BUTTON_TEXT[7]}
-                    key={author.id}
-                    onClick={deleteAuthor(author.id)}
-                  />
+                  <Button key={author.id} onClick={deleteAuthor(author.id)}>
+                    Delete author
+                  </Button>
                 </div>
               );
             })}

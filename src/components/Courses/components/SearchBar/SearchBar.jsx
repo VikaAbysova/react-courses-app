@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Button } from 'common/Button/Button';
 import { Input } from 'common/Input/Input';
-import { BUTTON_TEXT, mockedCoursesList } from 'contstants';
+import { mockedCoursesList } from 'contstants';
 import './searchBar.scss';
 
 export const SearchBar = ({ changeCourses }) => {
@@ -35,7 +35,7 @@ export const SearchBar = ({ changeCourses }) => {
         onChange={onChange}
       />
       <br />
-      <Button text={BUTTON_TEXT[1]} onClick={searchCourse} />
+      <Button onClick={searchCourse}>Search</Button>
     </form>
   );
 };
