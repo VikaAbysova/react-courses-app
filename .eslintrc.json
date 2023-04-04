@@ -11,21 +11,27 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "prettier"],
+  "plugins": [
+    "react",
+    "prettier",
+    "eslint-plugin-import",
+    "eslint-plugin-jsx-a11y"
+  ],
   "rules": {
     "prettier/prettier": [
       "error",
       {
         "printWidth": 80,
+        "tabWidth": 2,
+        "bracketSameLine": true,
+        "jsxSingleQuote": false,
         "trailingComma": "es5",
         "semi": true,
-        "jsxSingleQuote": true,
         "singleQuote": true,
-        "useTabs": true,
         "endOfLine": "auto",
-        "max-len": ["error", { "code": 80 }]
+        "max-len": ["error", {"code": 80}]
       }
     ],
-      "react/prop-types": ["error"]
+    "react/prop-types": ["error"]
   }
 }
