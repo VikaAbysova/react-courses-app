@@ -6,7 +6,6 @@
   "scripts": {
     "serve": "webpack serve --mode development",
     "build": "webpack --mode production",
-    "test:nowatch": "react-scripts test --watchAll=false",
     "prepare": "husky install",
     "prepublish": "npm run eslint:fix",
     "eslint": "eslint --ext .js --ext .jsx src",
@@ -16,11 +15,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babel-plugin-module-resolver": "^5.0.0",
     "dom": "^0.0.3",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.10.0"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",
@@ -37,12 +36,12 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.0",
     "husky": "^8.0.3",
     "mini-css-extract-plugin": "^2.7.5",
     "prettier": "^2.8.7",
     "sass": "^1.60.0",
     "sass-loader": "^13.2.1",
-    "source-map-loader": "^4.0.1",
     "style-loader": "^3.3.2",
     "webpack": "^5.76.3",
     "webpack-cli": "^5.0.1",
