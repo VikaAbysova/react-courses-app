@@ -14,41 +14,41 @@ import { userLogoutAction } from '../../store/user/actionCreators';
 import { getUser } from '../../store/selectors';
 
 export const Header = () => {
-	const location = useLocation();
-	const navigate = useNavigate();
-	const dispatch = useDispatch();
-	const userName = useSelector(getUser).name;
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userName = useSelector(getUser).name;
 
-	const [token, setToken] = useState(localStorage.token);
-	const showLogoutBtn =
-		location.pathname.includes('login') ||
-		location.pathname.includes('registration');
+  const [token, setToken] = useState(localStorage.token);
+  const showLogoutBtn =
+    location.pathname.includes('login') ||
+    location.pathname.includes('registration');
 
-	const logout = () => {
-		if (localStorage.token) {
-			dispatch(userLogoutAction());
-			localStorage.removeItem('token');
-			setToken('');
-			navigate('login');
-		}
-	};
+  const logout = () => {
+    if (localStorage.token) {
+      dispatch(userLogoutAction());
+      localStorage.removeItem('token');
+      setToken('');
+      navigate('login');
+    }
+  };
 
-	useEffect(() => {
-		!localStorage.token ? navigate('login') : navigate('courses');
-	}, [token]);
+  useEffect(() => {
+    !localStorage.token ? navigate('login') : navigate('courses');
+  }, [token]);
 
-	return (
-		<>
-			<header className='header'>
-				<Logo />
-				<div>
-					{localStorage.token && <p>{userName}</p>}
-					{!showLogoutBtn && (
-						<Button type='button' text={BUTTON_TEXT[0]} onClick={logout} />
-					)}
-				</div>
-			</header>
-			<Outlet />
-		</>
-	);
+  return (
+    <>
+      <header className="header">
+        <Logo />
+        <div>
+          {localStorage.token && <p>{userName}</p>}
+          {!showLogoutBtn && (
+            <Button type="button" text={BUTTON_TEXT[0]} onClick={logout} />
+          )}
+        </div>
+      </header>
+      <Outlet />
+    </>
+  );
 };
