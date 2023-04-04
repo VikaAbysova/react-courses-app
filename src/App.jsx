@@ -11,23 +11,23 @@ import { CreateCourse } from './components/CreateCourse/CreateCourse';
 import { CourseInfo } from './components/CourseInfo/CourseInfo';
 
 function App() {
-	const [userName, setUserName] = useState('');
-	return (
-		<Router>
-			<Routes>
-				<Route path='/' element={<Header userName={userName} />}>
-					<Route
-						path='login'
-						element={<Login getUserName={(name) => setUserName(name)} />}
-					/>
-					<Route path='courses' element={<Courses />} />
-					<Route path='registration' element={<Registration />} />
-					<Route path='courses/add' element={<CreateCourse />} />
-					<Route path='courses/:courseId' element={<CourseInfo />} />
-				</Route>
-			</Routes>
-		</Router>
-	);
+  const [userName, setUserName] = useState('');
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Header userName={userName} />}>
+          <Route
+            path="login"
+            element={<Login getUserName={(name) => setUserName(name)} />}
+          />
+          <Route path="courses" element={<Courses />} />
+          <Route path="registration" element={<Registration />} />
+          <Route path="courses/add" element={<CreateCourse />} />
+          <Route path="courses/:courseId" element={<CourseInfo />} />
+        </Route>
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;
