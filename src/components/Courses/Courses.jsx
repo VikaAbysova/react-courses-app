@@ -21,7 +21,6 @@ import { addAuthorsAction } from '../../store/authors/actionCreators';
 
 export const Courses = () => {
   const [coursesStatus, setCoursesStatus] = useState(true);
-  // const [coursesList, setCoursesList] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const courses = useSelector(getCourses);
@@ -29,18 +28,14 @@ export const Courses = () => {
 
   const getCoursesList = async () => {
     const apiResult = await ApiService.getCoursesRequest();
-    console.log('getCoursesList in function');
     if (apiResult.successful) {
-      console.log(apiResult.result);
       dispatch(getCoursesAction(apiResult.result));
     }
   };
 
   const getAuthorthList = async () => {
     const apiResult = await ApiService.getAuthorsRequest();
-    console.log('getAuthorsList in function');
     if (apiResult.successful) {
-      console.log(apiResult.result);
       dispatch(addAuthorsAction(apiResult.result));
     }
   };
@@ -58,7 +53,6 @@ export const Courses = () => {
 
   return (
     <>
-      {console.log('authors', authors)}
       <main className="courses">
         <div className="actions">
           <SearchBar previousCourses={courses} />
