@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'common/Button/Button';
 import { dateGenerator } from 'helpers/dateGeneratop';
-import './courseCard.scss';
+import styles from './CourseCard.module.scss';
 
 export const CourseCard = ({
   title,
@@ -12,19 +12,19 @@ export const CourseCard = ({
   authorsNames,
 }) => {
   return (
-    <article className="course-card">
+    <article className={styles.course_card}>
       <section>
         <h1>{title}</h1>
         <p>{description}</p>
       </section>
-      <div className="card-body">
-        <p className="authors-ellipsis information">
+      <div className={styles.card_body}>
+        <p className={styles.authors_ellipsis && styles.information}>
           <span>Authors:</span> {authorsNames.join(', ')}
         </p>
-        <p className="information">
+        <p className={styles.information}>
           <span>Duration:</span> {duration} hours
         </p>
-        <p className="information">
+        <p className={styles.information}>
           <span>Created:</span> {dateGenerator(creationDate)}
         </p>
         <Button type="button">Show course</Button>

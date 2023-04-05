@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './button.scss';
+import style from './Button.module.scss';
 
 export const Button = ({ children, type, onClick, id }) => (
-  <button type={type} onClick={onClick} id={id}>
+  <button type={type} onClick={onClick} id={id} className={style.btn_default}>
     {children}
   </button>
 );

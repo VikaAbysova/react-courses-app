@@ -1,4 +1,4 @@
-button {
+.btn_default {
     border: 1px solid violet;
     background-color: bisque;
     padding: 0.5rem 2rem;
@@ -9,6 +9,6 @@ button {
     overflow: hidden;
 }
 
-button:hover {
+.btn_default:hover {
     box-shadow: 0px 0px 10px 5px #fcc5e3;
 }

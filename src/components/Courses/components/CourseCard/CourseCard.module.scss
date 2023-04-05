@@ -1,4 +1,4 @@
-.course-card {
+.course_card {
   border: 1px solid lightskyblue;
   display: flex;
   justify-content: space-between;
@@ -8,7 +8,7 @@
   background-color: rgb(251, 246, 246);
 }
 
-.card-body {
+.card_body {
   margin-top: 1rem;
   width: 30%;
 }
@@ -17,25 +17,25 @@
   margin-bottom: 0.5rem;
 }
 
-.course-card section {
+.course_card section {
   width: 60%;
 }
 
-.course-card button {
+.course_card button {
   margin-top: 1rem;
   margin-right: 1rem;
 }
 
-.course-card span {
+.course_card span {
   font-weight: bold;
 }
 
-.course-card h1 {
+.course_card h1 {
   margin-bottom: 1rem;
   font-size: 2rem;
 }
 
-.course-card .authors-ellipsis {
+.course_card .authors_ellipsis {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

@@ -109,7 +109,6 @@ export const CreateCourse = ({ changeShowCourses }) => {
       type: 'increaseAuthorList',
       payload: changeAuthor,
     });
-    setAuthorList([...authorList, ...newAuthor]);
   };
 
   const createCourse = (e) => {
