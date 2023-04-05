@@ -1,14 +1,3 @@
-export const BUTTON_TEXT = [
-  'Logout',
-  'Search',
-  'Add new course',
-  'Show course',
-  'Create author',
-  'Add author',
-  'Create course',
-  'Delete author',
-];
-
 export const mockedCoursesList = [
   {
     id: 'de5aaa59-90f5-4dbc-b8a9-aaf205c551ba',
@@ -18,7 +7,7 @@ export const mockedCoursesList = [
     has been the industry's standard dummy text ever since the
    1500s, when an unknown 
     printer took a galley of type and scrambled it to make a type
-   specimen book. It has survived 
+    specimen book. It has survived 
     not only five centuries, but also the leap into electronic
    typesetting, remaining essentially u
     nchanged.`,
@@ -36,7 +25,7 @@ export const mockedCoursesList = [
    typesetting industry. Lorem Ipsum 
     has been the industry's standard dummy text ever since the
    1500s, when an unknown 
-    printer took a galley of type and scrambled it to make a type
+   printer took a galley of type and scrambled it to make a type
    specimen book.`,
     creationDate: '10/11/2020',
     duration: 210,
@@ -67,3 +56,5 @@ export const mockedAuthorsList = [
 ];
 
 export const generateId = () => new Date().valueOf().toString();
+
+export const defaultAuthorsList = [...mockedAuthorsList];

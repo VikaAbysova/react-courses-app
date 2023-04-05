@@ -1,107 +1,132 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import { Input } from 'common/Input/Input';
 import { Button } from 'common/Button/Button';
-import {
-  BUTTON_TEXT,
-  generateId,
-  mockedAuthorsList,
-  mockedCoursesList,
-} from 'contstants';
+import { generateId, mockedAuthorsList, mockedCoursesList } from 'contstants';
 import { pipeDuration } from 'helpers/pipeDuration';
 import './createCourse.scss';
+import { useReducer } from 'react';
+import { defaultAuthorsList } from '../../contstants';
+
+const initialState = {
+  nameValue: '',
+  titleValue: '',
+  durationValue: '',
+  descriptionValue: '',
+  authorList: defaultAuthorsList,
+  author: [],
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'titleChange':
+      return { ...state, titleValue: action.payload };
+    case 'descriptionChange':
+      return { ...state, descriptionValue: action.payload };
+    case 'nameChange':
+      return { ...state, nameValue: action.payload };
+    case 'durationChange':
+      return { ...state, durationValue: action.payload };
+    case 'increaseAuthorList':
+      return {
+        ...state,
+        authorList: [...state.authorList, { ...action.payload }],
+      };
+    case 'decreaseAuthorList':
+      return {
+        ...state,
+        authorList: [...action.payload],
+      };
+    case 'increaseAuthor':
+      return {
+        ...state,
+        author: [...state.author, { ...action.payload }],
+      };
+    case 'decreaseAuthor':
+      return {
+        ...state,
+        author: [...action.payload],
+      };
+    default:
+      throw new Error();
+  }
+};
 
 export const CreateCourse = ({ changeShowCourses }) => {
-  const [titleValue, setTitleValue] = useState('');
-  const [descriptionValue, setDescriptionValue] = useState('');
-  const [nameValue, setNameValue] = useState('');
-  const [durationValue, setDurationValue] = useState('');
-  const [authorList, setAuthorList] = useState(mockedAuthorsList);
-  const [author, setAuthor] = useState([]);
-
+  const [state, dispatch] = useReducer(reducer, initialState);
   let keyValue = generateId();
-
-  const titleChange = (e) => {
-    setTitleValue(e.target.value);
-  };
-  const descriptionChange = (e) => {
-    setDescriptionValue(e.target.value);
-  };
-  const nameChange = (e) => {
-    setNameValue(e.target.value);
-  };
-  const durationChange = (e) => {
-    setDurationValue(e.target.value);
-  };
 
   const createAuthor = (e) => {
     e.preventDefault();
-    const newAuthor = [{ id: generateId(), name: nameValue }];
-    if (nameValue.length >= 2) {
-      mockedAuthorsList.push({
-        id: generateId(),
-        name: nameValue,
-      });
-      if (!authorList.find((el) => el.id === newAuthor[0].id)) {
-        setAuthorList([...authorList, ...newAuthor]);
+    const newAuthor = { id: generateId(), name: state.nameValue };
+    if (state.nameValue.length >= 2) {
+      mockedAuthorsList.push(newAuthor);
+      if (!state.authorList.find((el) => el.id === newAuthor.id)) {
+        dispatch({
+          type: 'increaseAuthorList',
+          payload: { ...newAuthor },
+        });
       }
-      setNameValue('');
+      dispatch({ type: 'nameChange', payload: '' });
     }
   };
 
   const addAuthor = (id) => (e) => {
     e.preventDefault();
-    const authorName = mockedAuthorsList.find(
-      (author) => author.id === id
-    ).name;
-    const newAuthor = [
-      {
-        id: id,
-        name: authorName,
-      },
-    ];
-    const filteredAuthors = authorList.filter(
-      (author) => author.id !== newAuthor[0].id
+    const authorName = state.authorList.find((author) => author.id === id).name;
+    const newAuthor = {
+      id: id,
+      name: authorName,
+    };
+    const filteredAuthors = state.authorList.filter(
+      (author) => author.id !== newAuthor.id
     );
-    setAuthorList([...filteredAuthors]);
-    setAuthor([...author, ...newAuthor]);
+    dispatch({
+      type: 'decreaseAuthorList',
+      payload: filteredAuthors,
+    });
+    dispatch({
+      type: 'increaseAuthor',
+      payload: newAuthor,
+    });
   };
 
   const deleteAuthor = (id) => (e) => {
     e.preventDefault();
-    const delFilteredAuthors = author.filter((author) => author.id !== id);
-    const authorName = mockedAuthorsList.find(
-      (author) => author.id === id
-    ).name;
-    const newAuthor = [
-      {
-        id: id,
-        name: authorName,
-      },
-    ];
-    setAuthor([...delFilteredAuthors]);
+    const authorName = state.author.find((author) => author.id === id).name;
+    const changeAuthor = {
+      id: id,
+      name: authorName,
+    };
+    const delFilteredAuthors = state.author.filter(
+      (author) => author.id !== changeAuthor.id
+    );
+    dispatch({
+      type: 'decreaseAuthor',
+      payload: delFilteredAuthors,
+    });
+    dispatch({
+      type: 'increaseAuthorList',
+      payload: changeAuthor,
+    });
     setAuthorList([...authorList, ...newAuthor]);
   };
 
   const createCourse = (e) => {
     e.preventDefault();
-
-    if (!titleValue || !descriptionValue || !durationValue) {
+    if (!state.titleValue || !state.descriptionValue || !state.durationValue) {
       return alert(`
 		    Подтвердите действие на странице localhost:3000
 		    Please, fill in all fields`);
     }
-
     const newCourse = {
       id: generateId(),
-      title: titleValue,
-      description: descriptionValue,
+      title: state.titleValue,
+      description: state.descriptionValue,
       creationDate: new Date().toLocaleDateString(),
-      duration: durationValue,
-      authors: author.map((aut) => aut.id),
+      duration: state.durationValue,
+      authors: state.author.map((aut) => aut.id),
     };
-
     mockedCoursesList.push(newCourse);
     changeShowCourses();
   };
@@ -115,8 +140,10 @@ export const CreateCourse = ({ changeShowCourses }) => {
               labelText={'Title'}
               inputName={'courseTitle'}
               inputType={'text'}
-              inputValue={titleValue}
-              onChange={titleChange}
+              inputValue={state.titleValue}
+              onChange={(e) =>
+                dispatch({ type: 'titleChange', payload: e.target.value })
+              }
               placeholderText={'Enter title...'}
               required={true}
               minLength={'2'}
@@ -137,8 +164,10 @@ export const CreateCourse = ({ changeShowCourses }) => {
           rows="5"
           placeholder="Enter description"
           minLength="2"
-          onChange={descriptionChange}
-          value={descriptionValue}
+          onChange={(e) =>
+            dispatch({ type: 'descriptionChange', payload: e.target.value })
+          }
+          value={state.descriptionValue}
           required={true}></textarea>
         <div className="authors-data">
           <section className="authors-adding">
@@ -147,9 +176,11 @@ export const CreateCourse = ({ changeShowCourses }) => {
               labelText={'Author name'}
               inputType={'text'}
               inputName={'author-name'}
-              inputValue={nameValue}
+              inputValue={state.nameValue}
               placeholderText={'Enter author name...'}
-              onChange={nameChange}
+              onChange={(e) =>
+                dispatch({ type: 'nameChange', payload: e.target.value })
+              }
               minLength={'2'}
               required={true}
             />
@@ -160,7 +191,7 @@ export const CreateCourse = ({ changeShowCourses }) => {
           </section>
           <section className="authors">
             <h2>Authors</h2>
-            {authorList.map((author) => {
+            {state.authorList.map((author) => {
               keyValue++;
               return (
                 <div className="authors-list" key={keyValue}>
@@ -180,19 +211,21 @@ export const CreateCourse = ({ changeShowCourses }) => {
               labelText={'Duration'}
               inputType={'number'}
               inputName={'duration'}
-              inputValue={durationValue}
+              inputValue={state.durationValue}
               placeholderText={'Enter duration in minutes...'}
-              onChange={durationChange}
+              onChange={(e) =>
+                dispatch({ type: 'durationChange', payload: e.target.value })
+              }
               required={true}
               min={1}
             />
             <p className="duration-info">
-              Duration: <span>{pipeDuration(durationValue)}</span> hours
+              Duration: <span>{pipeDuration(state.durationValue)}</span> hours
             </p>
           </section>
           <section className="course-authors">
             <h2>Course authors</h2>
-            {author.map((author) => {
+            {state.author.map((author) => {
               keyValue++;
               return (
                 <div className="authors-list" key={keyValue}>
