@@ -34,7 +34,7 @@ export const Login = () => {
       };
       localStorage.setItem('token', `${result.result}`);
       dispatch(userLoginAction(user));
-      dispatch(currentUser());
+      // dispatch(currentUser());
       navigate('/courses');
     }
   };

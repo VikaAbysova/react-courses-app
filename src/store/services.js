@@ -21,3 +21,15 @@ export const getAuthorsRequest = async () => {
   const result = await response.json();
   return result;
 };
+
+export const logoutRequest = async () => {
+  const url = 'http://localhost:4000/logout';
+  const setHeaders = {
+    method: 'DELETE',
+    headers: {
+      Authorization: localStorage.token,
+    },
+  };
+  const res = await fetch(url, setHeaders);
+  return res;
+};

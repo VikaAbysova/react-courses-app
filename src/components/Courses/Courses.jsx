@@ -15,16 +15,27 @@ import * as ApiService from '../../store/services';
 
 import { getCoursesAction } from '../../store/courses/actionCreators';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAuthors, getCourses } from '../../store/selectors';
+import { getAuthors, getCourses, getUser } from '../../store/selectors';
 import { useState } from 'react';
 import { addAuthorsAction } from '../../store/authors/actionCreators';
+import { currentUser } from '../../store/user/thunk';
 
 export const Courses = () => {
   const [coursesStatus, setCoursesStatus] = useState(true);
-  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const courses = useSelector(getCourses);
   const authors = useSelector(getAuthors);
+  const userRole = useSelector(getUser).role;
+  const navigate = useNavigate();
+
+  const moveCoursesAdd = () => {
+    userRole === 'admin' ? navigate('/courses/add') : navigate('/courses');
+  };
+  const callCurrentUser = () => {
+    dispatch(currentUser());
+    moveCoursesAdd();
+  };
 
   const getCoursesList = async () => {
     const apiResult = await ApiService.getCoursesRequest();
@@ -56,10 +67,9 @@ export const Courses = () => {
       <main className="courses">
         <div className="actions">
           <SearchBar previousCourses={courses} />
-          <Button
-            text={BUTTON_TEXT[2]}
-            onClick={() => navigate('/courses/add')}
-          />
+          {userRole === 'admin' && (
+            <Button text={BUTTON_TEXT[2]} onClick={() => callCurrentUser()} />
+          )}
         </div>
         {courses.map((course) => {
           const authorsNames = course.authors.map(

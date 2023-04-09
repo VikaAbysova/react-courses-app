@@ -9,8 +9,10 @@ export const currentUser = () => async (dispatch) => {
   };
   const request = await fetch(url, setHeaders);
   const res = await request.json();
-  console.log('res', res);
-  console.log('header', setHeaders);
-  const user = res.result;
-  dispatch({ type: CURRENT_USER, payload: user });
+  const role = res.result.role;
+  const name = res.result.name;
+  dispatch({
+    type: CURRENT_USER,
+    payload: { role, name },
+  });
 };
