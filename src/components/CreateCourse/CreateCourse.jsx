@@ -4,56 +4,25 @@ import { Input } from 'common/Input/Input';
 import { Button } from 'common/Button/Button';
 import { generateId, mockedAuthorsList, mockedCoursesList } from 'contstants';
 import { pipeDuration } from 'helpers/pipeDuration';
-import './createCourse.scss';
 import { useReducer } from 'react';
-import { defaultAuthorsList } from '../../contstants';
-
-const initialState = {
-  nameValue: '',
-  titleValue: '',
-  durationValue: '',
-  descriptionValue: '',
-  authorList: defaultAuthorsList,
-  author: [],
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'titleChange':
-      return { ...state, titleValue: action.payload };
-    case 'descriptionChange':
-      return { ...state, descriptionValue: action.payload };
-    case 'nameChange':
-      return { ...state, nameValue: action.payload };
-    case 'durationChange':
-      return { ...state, durationValue: action.payload };
-    case 'increaseAuthorList':
-      return {
-        ...state,
-        authorList: [...state.authorList, { ...action.payload }],
-      };
-    case 'decreaseAuthorList':
-      return {
-        ...state,
-        authorList: [...action.payload],
-      };
-    case 'increaseAuthor':
-      return {
-        ...state,
-        author: [...state.author, { ...action.payload }],
-      };
-    case 'decreaseAuthor':
-      return {
-        ...state,
-        author: [...action.payload],
-      };
-    default:
-      throw new Error();
-  }
-};
+import {
+  initialState,
+  reducerCreateCourse,
+} from './common/reducerCreateCourse.js';
+import {
+  decreaseAuthorAction,
+  decreaseAuthorListAction,
+  descriptionChangeAction,
+  durationChangeAction,
+  increaseAuthorAction,
+  increaseAuthorListAction,
+  nameChangeAction,
+  titleChangeAction,
+} from './common/actionsCreateCourse';
+import './createCourse.scss';
 
 export const CreateCourse = ({ changeShowCourses }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducerCreateCourse, initialState);
   let keyValue = generateId();
 
   const createAuthor = (e) => {
@@ -62,12 +31,9 @@ export const CreateCourse = ({ changeShowCourses }) => {
     if (state.nameValue.length >= 2) {
       mockedAuthorsList.push(newAuthor);
       if (!state.authorList.find((el) => el.id === newAuthor.id)) {
-        dispatch({
-          type: 'increaseAuthorList',
-          payload: { ...newAuthor },
-        });
+        dispatch(increaseAuthorListAction({ ...newAuthor }));
       }
-      dispatch({ type: 'nameChange', payload: '' });
+      dispatch(nameChangeAction(''));
     }
   };
 
@@ -81,14 +47,8 @@ export const CreateCourse = ({ changeShowCourses }) => {
     const filteredAuthors = state.authorList.filter(
       (author) => author.id !== newAuthor.id
     );
-    dispatch({
-      type: 'decreaseAuthorList',
-      payload: filteredAuthors,
-    });
-    dispatch({
-      type: 'increaseAuthor',
-      payload: newAuthor,
-    });
+    dispatch(decreaseAuthorListAction(filteredAuthors));
+    dispatch(increaseAuthorAction(newAuthor));
   };
 
   const deleteAuthor = (id) => (e) => {
@@ -101,14 +61,8 @@ export const CreateCourse = ({ changeShowCourses }) => {
     const delFilteredAuthors = state.author.filter(
       (author) => author.id !== changeAuthor.id
     );
-    dispatch({
-      type: 'decreaseAuthor',
-      payload: delFilteredAuthors,
-    });
-    dispatch({
-      type: 'increaseAuthorList',
-      payload: changeAuthor,
-    });
+    dispatch(decreaseAuthorAction(delFilteredAuthors));
+    dispatch(increaseAuthorListAction(changeAuthor));
   };
 
   const createCourse = (e) => {
@@ -140,9 +94,7 @@ export const CreateCourse = ({ changeShowCourses }) => {
               inputName={'courseTitle'}
               inputType={'text'}
               inputValue={state.titleValue}
-              onChange={(e) =>
-                dispatch({ type: 'titleChange', payload: e.target.value })
-              }
+              onChange={(e) => dispatch(titleChangeAction(e.target.value))}
               placeholderText={'Enter title...'}
               required={true}
               minLength={'2'}
@@ -163,9 +115,7 @@ export const CreateCourse = ({ changeShowCourses }) => {
           rows="5"
           placeholder="Enter description"
           minLength="2"
-          onChange={(e) =>
-            dispatch({ type: 'descriptionChange', payload: e.target.value })
-          }
+          onChange={(e) => dispatch(descriptionChangeAction(e.target.value))}
           value={state.descriptionValue}
           required={true}></textarea>
         <div className="authors-data">
@@ -177,9 +127,7 @@ export const CreateCourse = ({ changeShowCourses }) => {
               inputName={'author-name'}
               inputValue={state.nameValue}
               placeholderText={'Enter author name...'}
-              onChange={(e) =>
-                dispatch({ type: 'nameChange', payload: e.target.value })
-              }
+              onChange={(e) => dispatch(nameChangeAction(e.target.value))}
               minLength={'2'}
               required={true}
             />
@@ -212,9 +160,7 @@ export const CreateCourse = ({ changeShowCourses }) => {
               inputName={'duration'}
               inputValue={state.durationValue}
               placeholderText={'Enter duration in minutes...'}
-              onChange={(e) =>
-                dispatch({ type: 'durationChange', payload: e.target.value })
-              }
+              onChange={(e) => dispatch(durationChangeAction(e.target.value))}
               required={true}
               min={1}
             />
