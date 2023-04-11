@@ -1,23 +1,26 @@
 .header {
-    border: 1px solid rgb(240, 155, 155);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 2rem;
-    background-color: #E8E3E3;
+  border: 1px solid rgb(240, 155, 155);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  margin-bottom: 2rem;
+  background-color: #e8e3e3;
+  position: sticky;
+  top: 0;
 }
 
 .user-name {
-    font-weight: bold;
-    margin: 2rem;
+  font-weight: bold;
+  margin: 2rem;
 }
 
 .header-body {
-    display: flex;
-    height: 2rem;
-    align-items: center;
+  display: flex;
+  height: 2rem;
+  align-items: center;
 }
 
 .header button {
-    background-color: #d0ebfa;
+  background-color: #d0ebfa;
 }

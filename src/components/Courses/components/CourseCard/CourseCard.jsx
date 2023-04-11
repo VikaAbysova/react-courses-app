@@ -1,16 +1,20 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
 import PropTypes from 'prop-types';
 import { Button } from 'common/Button/Button';
 import { dateGenerator } from 'helpers/dateGeneratop';
 import styles from './CourseCard.module.scss';
 
 export const CourseCard = ({
+  id,
   title,
   description,
   creationDate,
   duration,
   authorsNames,
 }) => {
+  const navigate = useNavigate();
+  const showCourse = () => navigate(`/courses/${id}`);
   return (
     <article className={styles.course_card}>
       <section>
@@ -27,13 +31,16 @@ export const CourseCard = ({
         <p className={styles.information}>
           <span>Created:</span> {dateGenerator(creationDate)}
         </p>
-        <Button type="button">Show course</Button>
+        <Button type="button" onClick={showCourse}>
+          Show course
+        </Button>
       </div>
     </article>
   );
 };
 
 CourseCard.propTypes = {
+  id: PropTypes.string,
   title: PropTypes.string,
   description: PropTypes.string,
   creationDate: PropTypes.string,

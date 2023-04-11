@@ -1,21 +1,28 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Header } from 'components/Header/Header';
+import { Login } from 'components/Login/Login';
+import { Registration } from 'components/Registration/Registration';
 import { Courses } from 'components/Courses/Courses';
 import { CreateCourse } from 'components/CreateCourse/CreateCourse';
-import 'app.scss';
+import { CourseInfo } from 'components/CourseInfo/CourseInfo';
+import './app.scss';
 
 function App() {
-  const [showCourses, setShowCourses] = useState(true);
-  const changeShowCourses = useCallback(
-    () => setShowCourses(!showCourses),
-    [showCourses]
-  );
+  const [userName, setUserName] = useState('');
+  const getUserName = (name) => setUserName(name);
   return (
-    <>
-      <Header />
-      {showCourses && <Courses changeShowCourses={changeShowCourses} />}
-      {!showCourses && <CreateCourse changeShowCourses={changeShowCourses} />}
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Header userName={userName} />}>
+          <Route path="login" element={<Login getUserName={getUserName} />} />
+          <Route path="courses" element={<Courses />} />
+          <Route path="registration" element={<Registration />} />
+          <Route path="courses/add" element={<CreateCourse />} />
+          <Route path="courses/:courseId" element={<CourseInfo />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 export default App;

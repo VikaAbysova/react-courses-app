@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Input } from 'common/Input/Input';
 import { Button } from 'common/Button/Button';
 import { generateId, mockedAuthorsList, mockedCoursesList } from 'contstants';
@@ -9,20 +8,13 @@ import {
   initialState,
   reducerCreateCourse,
 } from './common/reducerCreateCourse.js';
-import {
-  decreaseAuthorAction,
-  decreaseAuthorListAction,
-  descriptionChangeAction,
-  durationChangeAction,
-  increaseAuthorAction,
-  increaseAuthorListAction,
-  nameChangeAction,
-  titleChangeAction,
-} from './common/actionsCreateCourse';
+import * as Actions from './common/actionsCreateCourse';
+import { useNavigate } from 'react-router';
 import './createCourse.scss';
 
-export const CreateCourse = ({ changeShowCourses }) => {
+export const CreateCourse = () => {
   const [state, dispatch] = useReducer(reducerCreateCourse, initialState);
+  const navigate = useNavigate();
   let keyValue = generateId();
 
   const createAuthor = (e) => {
@@ -31,9 +23,9 @@ export const CreateCourse = ({ changeShowCourses }) => {
     if (state.nameValue.length >= 2) {
       mockedAuthorsList.push(newAuthor);
       if (!state.authorList.find((el) => el.id === newAuthor.id)) {
-        dispatch(increaseAuthorListAction({ ...newAuthor }));
+        dispatch(Actions.increaseAuthorListAction({ ...newAuthor }));
       }
-      dispatch(nameChangeAction(''));
+      dispatch(Actions.nameChangeAction(''));
     }
   };
 
@@ -47,8 +39,8 @@ export const CreateCourse = ({ changeShowCourses }) => {
     const filteredAuthors = state.authorList.filter(
       (author) => author.id !== newAuthor.id
     );
-    dispatch(decreaseAuthorListAction(filteredAuthors));
-    dispatch(increaseAuthorAction(newAuthor));
+    dispatch(Actions.decreaseAuthorListAction(filteredAuthors));
+    dispatch(Actions.increaseAuthorAction(newAuthor));
   };
 
   const deleteAuthor = (id) => (e) => {
@@ -61,8 +53,8 @@ export const CreateCourse = ({ changeShowCourses }) => {
     const delFilteredAuthors = state.author.filter(
       (author) => author.id !== changeAuthor.id
     );
-    dispatch(decreaseAuthorAction(delFilteredAuthors));
-    dispatch(increaseAuthorListAction(changeAuthor));
+    dispatch(Actions.decreaseAuthorAction(delFilteredAuthors));
+    dispatch(Actions.increaseAuthorListAction(changeAuthor));
   };
 
   const createCourse = (e) => {
@@ -72,6 +64,7 @@ export const CreateCourse = ({ changeShowCourses }) => {
 		    Подтвердите действие на странице localhost:3000
 		    Please, fill in all fields`);
     }
+
     const newCourse = {
       id: generateId(),
       title: state.titleValue,
@@ -81,7 +74,7 @@ export const CreateCourse = ({ changeShowCourses }) => {
       authors: state.author.map((aut) => aut.id),
     };
     mockedCoursesList.push(newCourse);
-    changeShowCourses();
+    navigate('/courses');
   };
 
   return (
@@ -94,7 +87,9 @@ export const CreateCourse = ({ changeShowCourses }) => {
               inputName={'courseTitle'}
               inputType={'text'}
               inputValue={state.titleValue}
-              onChange={(e) => dispatch(titleChangeAction(e.target.value))}
+              onChange={(e) =>
+                dispatch(Actions.titleChangeAction(e.target.value))
+              }
               placeholderText={'Enter title...'}
               required={true}
               minLength={'2'}
@@ -115,7 +110,9 @@ export const CreateCourse = ({ changeShowCourses }) => {
           rows="5"
           placeholder="Enter description"
           minLength="2"
-          onChange={(e) => dispatch(descriptionChangeAction(e.target.value))}
+          onChange={(e) =>
+            dispatch(Actions.descriptionChangeAction(e.target.value))
+          }
           value={state.descriptionValue}
           required={true}></textarea>
         <div className="authors-data">
@@ -127,7 +124,9 @@ export const CreateCourse = ({ changeShowCourses }) => {
               inputName={'author-name'}
               inputValue={state.nameValue}
               placeholderText={'Enter author name...'}
-              onChange={(e) => dispatch(nameChangeAction(e.target.value))}
+              onChange={(e) =>
+                dispatch(Actions.nameChangeAction(e.target.value))
+              }
               minLength={'2'}
               required={true}
             />
@@ -160,7 +159,9 @@ export const CreateCourse = ({ changeShowCourses }) => {
               inputName={'duration'}
               inputValue={state.durationValue}
               placeholderText={'Enter duration in minutes...'}
-              onChange={(e) => dispatch(durationChangeAction(e.target.value))}
+              onChange={(e) =>
+                dispatch(Actions.durationChangeAction(e.target.value))
+              }
               required={true}
               min={1}
             />
@@ -186,8 +187,4 @@ export const CreateCourse = ({ changeShowCourses }) => {
       </form>
     </article>
   );
-};
-
-CreateCourse.propTypes = {
-  changeShowCourses: PropTypes.func,
 };
