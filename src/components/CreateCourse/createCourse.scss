@@ -1,0 +1,109 @@
+.creating-course {
+    padding: 2rem;
+    border: 1px solid lightskyblue;
+    background-color: rgb(227, 229, 232);
+    margin-top: 2rem;
+}
+
+#courseTitle {
+    min-width: 40rem;
+}
+
+.creating-course textarea {
+    min-width: 100%;
+    padding: 1rem 2rem;
+    outline: none;
+    border: 1px solid rgb(213, 213, 54);
+    font-size: inherit;
+    font-family: inherit;
+    margin-top: 1rem;
+}
+
+.creating-course .creating-bar{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.creating-course textarea:invalid {
+    background-color: rgb(244, 211, 211);
+}
+
+.creating-course input:invalid  {
+    background-color: rgb(244, 211, 211);
+}
+
+.creating-course input {
+    margin-top: 1rem;
+}
+
+.creating-bar {
+    margin-bottom: 2rem;
+}
+
+.creating-bar :first-child {
+    display: flex;
+    flex-direction: column;
+}
+
+.creating-course label {
+    font-size: large;
+}
+
+.creating-course h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.authors-adding button {
+    margin: 1rem auto;
+    display: block;
+}
+
+.authors-adding, 
+.authors, 
+.course-authors, 
+.course-duration {
+    min-width: 45%;
+    min-height: 20vw;
+}
+
+.course-duration p {
+font-size: 1.6rem;
+margin-top: 2rem;
+}
+
+.duration-info span {
+    font-weight: bold;
+}
+
+
+.authors-adding input, .course-duration input {
+    width: 100%;
+}
+
+.authors-data {
+    border: 1px solid rgb(75, 107, 139);
+    margin-top: 1.5rem;
+    padding: 2rem ;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: center;
+}
+
+.authors-list {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    margin-top: 0.5rem;
+    gap: 2rem;
+}
+
+.author-names {
+    min-width: 40%;
+}
+
+.disapear {
+    display: none;
+}
