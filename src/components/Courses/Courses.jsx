@@ -15,10 +15,11 @@ import * as ApiService from '../../store/services';
 
 import { getCoursesAction } from '../../store/courses/actionCreators';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAuthors, getCourses, getUser } from '../../store/selectors';
+import { getAuthors, getUser, getCourses } from '../../store/selectors';
 import { useState } from 'react';
 import { addAuthorsAction } from '../../store/authors/actionCreators';
 import { currentUser } from '../../store/user/thunk';
+import { getCoursesAll } from '../../store/courses/thunk';
 
 export const Courses = () => {
   const [coursesStatus, setCoursesStatus] = useState(true);
@@ -28,20 +29,22 @@ export const Courses = () => {
   const authors = useSelector(getAuthors);
   const userRole = useSelector(getUser).role;
   const navigate = useNavigate();
+  const disabled = userRole === 'admin' ? false : true;
+  const className = userRole !== 'admin' ? 'not-allowed' : 'pointer';
 
-  const moveCoursesAdd = () => {
-    userRole === 'admin' ? navigate('/courses/add') : navigate('/courses');
-  };
   const callCurrentUser = () => {
     dispatch(currentUser());
-    moveCoursesAdd();
+    navigate('/courses/add');
   };
 
-  const getCoursesList = async () => {
-    const apiResult = await ApiService.getCoursesRequest();
-    if (apiResult.successful) {
-      dispatch(getCoursesAction(apiResult.result));
-    }
+  // const getCoursesList = async () => {
+  //   const apiResult = await ApiService.getCoursesRequest();
+  //   if (apiResult.successful) {
+  //     dispatch(getCoursesAction(apiResult.result));
+  //   }
+  // };
+  const getCoursesList = () => {
+    dispatch(getCoursesAll());
   };
 
   const getAuthorthList = async () => {
@@ -67,9 +70,12 @@ export const Courses = () => {
       <main className="courses">
         <div className="actions">
           <SearchBar previousCourses={courses} />
-          {userRole === 'admin' && (
-            <Button text={BUTTON_TEXT[2]} onClick={() => callCurrentUser()} />
-          )}
+          <Button
+            text={BUTTON_TEXT[2]}
+            onClick={callCurrentUser}
+            disabled={disabled}
+            className={className}
+          />
         </div>
         {courses.map((course) => {
           const authorsNames = course.authors.map(

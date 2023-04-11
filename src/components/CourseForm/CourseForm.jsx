@@ -12,9 +12,11 @@ import { BUTTON_TEXT, generateId, mockedAuthorsList } from '../../contstants';
 import { pipeDuration } from '../../helpers/pipeDuration';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { saveCourseAction } from '../../store/courses/actionCreators';
 import { getAuthors } from '../../store/selectors';
 import { saveAuthorsAction } from '../../store/authors/actionCreators';
+import * as ApiServices from '../../store/services';
+import { getCoursesAll } from '../../store/courses/thunk';
+import { getAuthorsAll } from '../../store/authors/thunk';
 
 export const CreateCourse = () => {
   const authors = useSelector(getAuthors);
@@ -45,18 +47,20 @@ export const CreateCourse = () => {
     setDurationValue(e.target.value);
   };
 
-  const createAuthor = (e) => {
+  const createAuthor = async (e) => {
     e.preventDefault();
-    const newAuthor = [{ id: generateId(), name: nameValue }];
     if (nameValue.length >= 2) {
       const authorCreated = {
         name: nameValue,
-        id: generateId(),
       };
-      dispatch(saveAuthorsAction(authorCreated));
+      const postAuthor = await ApiServices.saveNewAuthor(authorCreated);
+      if (postAuthor.successful) {
+        dispatch(getAuthorsAll());
+      }
+      const newAuthor = { name: nameValue, id: postAuthor.result.id };
 
-      if (!authorList.find((el) => el.id === newAuthor[0].id)) {
-        setAuthorList([...authorList, ...newAuthor]);
+      if (!authorList.find((el) => el.id === newAuthor.id)) {
+        setAuthorList([...authorList, newAuthor]);
       }
       setNameValue('');
     }
@@ -92,7 +96,7 @@ export const CreateCourse = () => {
     setAuthorList([...authorList, ...newAuthor]);
   };
 
-  const createCourse = (e) => {
+  const createCourse = async (e) => {
     e.preventDefault();
 
     if (!titleValue || !descriptionValue || !durationValue) {
@@ -100,19 +104,19 @@ export const CreateCourse = () => {
 		    Подтвердите действие на странице localhost:3000
 		    Please, fill in all fields`);
     }
-    const newCourseList = [
-      {
-        id: generateId(),
-        title: titleValue,
-        description: descriptionValue,
-        creationDate: new Date().toLocaleDateString(),
-        duration: durationValue,
-        authors: author.map((aut) => aut.id),
-      },
-    ];
 
-    dispatch(saveCourseAction(newCourseList));
-    navigate('/courses');
+    const newCourse = {
+      title: titleValue,
+      description: descriptionValue,
+      creationDate: new Date().toLocaleDateString(),
+      duration: +durationValue,
+      authors: author.map((aut) => aut.id),
+    };
+    const postCourse = await ApiServices.saveNewCourse(newCourse);
+    if (postCourse.successful) {
+      dispatch(getCoursesAll());
+      navigate('/courses');
+    }
   };
 
   return (

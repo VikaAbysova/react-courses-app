@@ -31,8 +31,8 @@ function App() {
         <Route path="/" element={<Header />}>
           <Route element={<PrivateRouter />}>
             <Route path="courses/add" element={<CreateCourse />} />
-            <Route path="courses/:courseId" element={<CourseInfo />} />
           </Route>
+          <Route path="courses/:courseId" element={<CourseInfo />} />
           <Route path="courses" element={<Courses />} />
           <Route path="login" element={<Login />} />
           <Route path="registration" element={<Registration />} />
