@@ -1,25 +1,17 @@
-import './courses.scss';
-
 import React, { useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
-
-import { BUTTON_TEXT } from '../../contstants';
-
+import { BUTTON_TEXT } from 'contstants';
 import { CourseCard } from './components/CourseCard/CourseCard';
 import { SearchBar } from './components/SearchBar/SearchBar';
-import { Button } from '../../common/Button/Button';
-
-import { pipeDuration } from '../../helpers/pipeDuration';
-
-import * as ApiService from '../../store/services';
-
-import { getCoursesAction } from '../../store/courses/actionCreators';
+import { Button } from 'common/Button/Button';
+import { pipeDuration } from 'helpers/pipeDuration';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAuthors, getUser, getCourses } from '../../store/selectors';
-import { useState } from 'react';
-import { addAuthorsAction } from '../../store/authors/actionCreators';
-import { currentUser } from '../../store/user/thunk';
-import { getCoursesAll } from '../../store/courses/thunk';
+import { getAuthors, getUser, getCourses } from 'store/selectors';
+import { currentUser } from 'store/user/thunk';
+import { getCoursesAll } from 'store/courses/thunk';
+import { getAuthorsAll } from 'store/authors/thunk';
+import './courses.scss';
 
 export const Courses = () => {
   const [coursesStatus, setCoursesStatus] = useState(true);
@@ -36,23 +28,13 @@ export const Courses = () => {
     dispatch(currentUser());
     navigate('/courses/add');
   };
-
-  // const getCoursesList = async () => {
-  //   const apiResult = await ApiService.getCoursesRequest();
-  //   if (apiResult.successful) {
-  //     dispatch(getCoursesAction(apiResult.result));
-  //   }
-  // };
   const getCoursesList = () => {
     dispatch(getCoursesAll());
   };
-
-  const getAuthorthList = async () => {
-    const apiResult = await ApiService.getAuthorsRequest();
-    if (apiResult.successful) {
-      dispatch(addAuthorsAction(apiResult.result));
-    }
+  const getAuthorthList = () => {
+    dispatch(getAuthorsAll());
   };
+
   useEffect(() => {
     if (!authors.length) {
       getAuthorthList();

@@ -45,7 +45,6 @@ export const saveNewCourse = async (newCourse) => {
     },
   });
   const result = await response.json();
-  console.log('result adding course', result);
   return result;
 };
 
@@ -60,7 +59,6 @@ export const saveNewAuthor = async (newAuthor) => {
     },
   });
   const result = await response.json();
-  console.log('result adding author', result);
   return result;
 };
 
@@ -68,12 +66,26 @@ export const deleteCourse = async (id) => {
   const url = `http://localhost:4000/courses/${id}`;
   const response = await fetch(url, {
     method: 'DELETE',
-    // body: JSON.stringify(newAuthor),
     headers: {
       Authorization: localStorage.token,
     },
   });
   const result = await response.json();
-  console.log('deleted course', result);
+  return result;
+};
+
+export const updateCourseRequest = async (id, course) => {
+  console.log('args', id, course);
+  const url = `http://localhost:4000/courses/${id}`;
+  const response = await fetch(url, {
+    method: 'PUT',
+    body: JSON.stringify(course),
+    headers: {
+      Authorization: localStorage.token,
+      'Content-Type': 'application/json',
+    },
+  });
+  const result = await response.json();
+  console.log('update course', result);
   return result;
 };

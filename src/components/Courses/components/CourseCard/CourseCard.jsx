@@ -7,12 +7,11 @@ import { dateGenerator } from 'helpers/dateGeneratop';
 import { BsPencilFill } from 'react-icons/bs';
 import { IoTrashSharp } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteCourseAction } from 'store/courses/actionCreators';
 import { getCourses } from 'store/selectors';
+import { getUser } from 'store/selectors';
+import * as ApiServices from 'store/services';
+import { getCoursesAll } from 'store/courses/thunk';
 import './courseCard.scss';
-import { getUser } from '../../../../store/selectors';
-import * as ApiServices from '../../../../store/services';
-import { getCoursesAll } from '../../../../store/courses/thunk';
 
 export const CourseCard = ({
   id,
@@ -25,11 +24,9 @@ export const CourseCard = ({
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const courses = useSelector(getCourses);
   const userRole = useSelector(getUser).role;
 
   const deleteCourse = async () => {
-    console.log('id', id);
     const deletedCourseRequest = await ApiServices.deleteCourse(id);
     setCoursesStatus();
     if (deletedCourseRequest.successful) {
@@ -63,7 +60,7 @@ export const CourseCard = ({
             type="button"
             text={<BsPencilFill className="icon" />}
             className={'icon'}
-            //onClick={() => navigate(`/courses/${id}`)}
+            onClick={() => navigate(`/courses/update/${id}`)}
           />
         )}
         {userRole === 'admin' && (

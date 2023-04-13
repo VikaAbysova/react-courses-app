@@ -7,6 +7,7 @@ export const BUTTON_TEXT = [
   'Add author',
   'Create course',
   'Delete author',
+  'Update course',
 ];
 
 export const mockedCoursesList = [

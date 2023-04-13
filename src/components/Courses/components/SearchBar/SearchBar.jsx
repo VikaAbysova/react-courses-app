@@ -1,21 +1,16 @@
-import './searchBar.scss';
-
 import React from 'react';
-
 import { useState } from 'react';
-
-import { Button } from '../../../../common/Button/Button';
-import { Input } from '../../../../common/Input/Input';
-
-import { BUTTON_TEXT } from '../../../../contstants';
+import { Button } from 'common/Button/Button';
+import { Input } from 'common/Input/Input';
+import { BUTTON_TEXT } from 'contstants';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCourses } from '../../../../store/selectors';
-import { updateCourseAction } from '../../../../store/courses/actionCreators';
+import { getCourses } from 'store/selectors';
+import { updateCourseAction } from 'store/courses/actionCreators';
+import './searchBar.scss';
 
 export const SearchBar = () => {
   const [inputValue, setInputValue] = useState('');
   const [previousCourses, setPreviousCourses] = useState([]);
-
   const courses = useSelector(getCourses);
   const dispatch = useDispatch();
 

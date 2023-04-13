@@ -1,37 +1,54 @@
-import './createCourse.scss';
-
 import React from 'react';
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
-
-import { Input } from '../../common/Input/Input';
-import { Button } from '../../common/Button/Button';
-
-import { BUTTON_TEXT, generateId, mockedAuthorsList } from '../../contstants';
-
-import { pipeDuration } from '../../helpers/pipeDuration';
-
+import { useNavigate, useParams } from 'react-router';
+import { Input } from 'common/Input/Input';
+import { Button } from 'common/Button/Button';
+import { BUTTON_TEXT, generateId } from 'contstants';
+import { pipeDuration } from 'helpers/pipeDuration';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAuthors } from '../../store/selectors';
-import { saveAuthorsAction } from '../../store/authors/actionCreators';
-import * as ApiServices from '../../store/services';
-import { getCoursesAll } from '../../store/courses/thunk';
-import { getAuthorsAll } from '../../store/authors/thunk';
+import { getAuthors, getCourses } from 'store/selectors';
+import * as ApiServices from 'store/services';
+import { getCoursesAll } from 'store/courses/thunk';
+import { getAuthorsAll } from 'store/authors/thunk';
+import { useEffect } from 'react';
+import './createCourse.scss';
+import { updateCourseRequest } from '../../store/services';
 
-export const CreateCourse = () => {
+export const CourseForm = () => {
   const authors = useSelector(getAuthors);
+  const courses = useSelector(getCourses);
 
-  const [titleValue, setTitleValue] = useState('');
-  const [descriptionValue, setDescriptionValue] = useState('');
+  const param = useParams();
+  const updateCourse = courses.find((course) => course.id === param.courseId);
+  const authorListParam = authors.filter((author) =>
+    updateCourse.authors.every((id) => author.id !== id)
+  );
+  const [authorsParam, setAuthorsParam] = useState([]);
+  const [paramsAuth, setParamsAuth] = useState(updateCourse.authors);
+
+  const [titleValue, setTitleValue] = useState(
+    param.courseId ? updateCourse.title : ''
+  );
+  const [descriptionValue, setDescriptionValue] = useState(
+    param.courseId ? updateCourse.description : ''
+  );
   const [nameValue, setNameValue] = useState('');
-  const [durationValue, setDurationValue] = useState('');
+  const [durationValue, setDurationValue] = useState(
+    param.courseId ? updateCourse.duration.toString() : ''
+  );
+
   const [authorList, setAuthorList] = useState(authors);
   const [author, setAuthor] = useState([]);
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    if (param.courseId) {
+      setAuthorList(authorListParam);
+    }
+  }, [authorsParam]);
 
   let keyValue = generateId();
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const titleChange = (e) => {
@@ -75,16 +92,21 @@ export const CreateCourse = () => {
         name: authorName,
       },
     ];
+
     const filteredAuthors = authorList.filter(
       (author) => author.id !== newAuthor[0].id
     );
+    param.courseId
+      ? setParamsAuth([...paramsAuth, id])
+      : setAuthor([...author, ...newAuthor]);
     setAuthorList([...filteredAuthors]);
-    setAuthor([...author, ...newAuthor]);
   };
 
   const deleteAuthor = (id) => (e) => {
     e.preventDefault();
-    const delFilteredAuthors = author.filter((author) => author.id !== id);
+    const delFilteredAuthors = param.courseId
+      ? paramsAuth.filter((idAuth) => idAuth !== id)
+      : author.filter((author) => author.id !== id);
     const authorName = authors.find((author) => author.id === id).name;
     const newAuthor = [
       {
@@ -92,7 +114,9 @@ export const CreateCourse = () => {
         name: authorName,
       },
     ];
-    setAuthor([...delFilteredAuthors]);
+    param.courseId
+      ? setParamsAuth([...delFilteredAuthors])
+      : setAuthor([...delFilteredAuthors]);
     setAuthorList([...authorList, ...newAuthor]);
   };
 
@@ -119,6 +143,26 @@ export const CreateCourse = () => {
     }
   };
 
+  const courseUpdate = async (e) => {
+    e.preventDefault();
+    const updateCourseCard = {
+      title: titleValue,
+      description: descriptionValue,
+      creationDate: new Date().toLocaleDateString(),
+      duration: +durationValue,
+      authors: paramsAuth.map((id) => id),
+    };
+    console.log('updateCourseCard', updateCourseCard);
+    const putRequestUpdateCourse = await ApiServices.updateCourseRequest(
+      param.courseId,
+      updateCourseCard
+    );
+    if (putRequestUpdateCourse.successful) {
+      dispatch(getCoursesAll());
+      navigate('/courses');
+    }
+  };
+
   return (
     <article className="creating-course">
       <form>
@@ -137,9 +181,9 @@ export const CreateCourse = () => {
           </div>
           <div>
             <Button
-              text={BUTTON_TEXT[6]}
+              text={param.courseId ? BUTTON_TEXT[8] : BUTTON_TEXT[6]}
               type={'submit'}
-              onClick={createCourse}
+              onClick={param.courseId ? courseUpdate : createCourse}
             />
           </div>
         </div>
@@ -209,6 +253,21 @@ export const CreateCourse = () => {
           </section>
           <section className="course-authors">
             <h2>Course authors</h2>
+            {param.courseId &&
+              paramsAuth.map((id) => {
+                const authName = authors.find((auth) => auth.id === id).name;
+                keyValue += 1;
+                return (
+                  <div className="authors-list" key={keyValue}>
+                    <p key={keyValue}>{authName}</p>
+                    <Button
+                      text={BUTTON_TEXT[7]}
+                      key={id}
+                      onClick={deleteAuthor(id)}
+                    />
+                  </div>
+                );
+              })}
             {author.map((author) => {
               keyValue += 1;
               return (
