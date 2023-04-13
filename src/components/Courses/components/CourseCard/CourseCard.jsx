@@ -3,7 +3,12 @@ import { useNavigate } from 'react-router';
 import PropTypes from 'prop-types';
 import { Button } from 'common/Button/Button';
 import { dateGenerator } from 'helpers/dateGeneratop';
-import styles from './CourseCard.module.scss';
+import { BsPencilFill } from 'react-icons/bs';
+import { IoTrashSharp } from 'react-icons/io5';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteCourseAction } from 'store/courses/actionCreators';
+import { getCourses } from 'store/selectors';
+import './courseCard.scss';
 
 export const CourseCard = ({
   id,
@@ -12,27 +17,43 @@ export const CourseCard = ({
   creationDate,
   duration,
   authorsNames,
+  setCoursesStatus,
 }) => {
+  const dispatch = useDispatch();
+  const courses = useSelector(getCourses);
   const navigate = useNavigate();
   const showCourse = () => navigate(`/courses/${id}`);
+
+  const deleteCourse = () => {
+    const filteredCourses = courses.filter((course) => course.id !== id);
+    setCoursesStatus();
+    dispatch(deleteCourseAction(filteredCourses));
+  };
+
   return (
-    <article className={styles.course_card}>
+    <article className="course_card">
       <section>
         <h1>{title}</h1>
         <p>{description}</p>
       </section>
-      <div className={styles.card_body}>
-        <p className={styles.authors_ellipsis && styles.information}>
+      <div className="card_body">
+        <p className="authors_ellipsis information">
           <span>Authors:</span> {authorsNames.join(', ')}
         </p>
-        <p className={styles.information}>
+        <p className="information">
           <span>Duration:</span> {duration} hours
         </p>
-        <p className={styles.information}>
+        <p className="information">
           <span>Created:</span> {dateGenerator(creationDate)}
         </p>
         <Button type="button" onClick={showCourse}>
           Show course
+        </Button>
+        <Button type="button" id="icon">
+          {<BsPencilFill />}
+        </Button>
+        <Button type="button" id="icon" onClick={deleteCourse}>
+          {<IoTrashSharp />}
         </Button>
       </div>
     </article>
@@ -46,4 +67,5 @@ CourseCard.propTypes = {
   creationDate: PropTypes.string,
   duration: PropTypes.string,
   authorsNames: PropTypes.arrayOf(PropTypes.string),
+  setCoursesStatus: PropTypes.func,
 };

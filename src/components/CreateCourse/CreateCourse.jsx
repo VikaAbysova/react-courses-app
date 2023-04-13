@@ -1,29 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useReducer } from 'react';
 import { Input } from 'common/Input/Input';
 import { Button } from 'common/Button/Button';
-import { generateId, mockedAuthorsList, mockedCoursesList } from 'contstants';
+import { generateId } from 'contstants';
 import { pipeDuration } from 'helpers/pipeDuration';
-import { useReducer } from 'react';
 import {
   initialState,
   reducerCreateCourse,
-} from './common/reducerCreateCourse.js';
+} from './common/reducerCreateCourse';
 import * as Actions from './common/actionsCreateCourse';
 import { useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveCourseAction } from 'store/courses/actionCreators';
+import { saveAuthorsAction } from 'store/authors/actionCreators';
+import { getAuthors } from 'store/selectors';
 import './createCourse.scss';
 
 export const CreateCourse = () => {
   const [state, dispatch] = useReducer(reducerCreateCourse, initialState);
+  const authorListServ = useSelector(getAuthors);
+  const [authorList, setAuthorList] = useState(authorListServ);
   const navigate = useNavigate();
   let keyValue = generateId();
+  const dispatchStore = useDispatch();
 
   const createAuthor = (e) => {
     e.preventDefault();
     const newAuthor = { id: generateId(), name: state.nameValue };
     if (state.nameValue.length >= 2) {
-      mockedAuthorsList.push(newAuthor);
-      if (!state.authorList.find((el) => el.id === newAuthor.id)) {
-        dispatch(Actions.increaseAuthorListAction({ ...newAuthor }));
+      dispatchStore(saveAuthorsAction(newAuthor));
+      if (!authorList.find((el) => el.id === newAuthor.id)) {
+        setAuthorList([...authorList, { ...newAuthor }]);
       }
       dispatch(Actions.nameChangeAction(''));
     }
@@ -31,15 +38,15 @@ export const CreateCourse = () => {
 
   const addAuthor = (id) => (e) => {
     e.preventDefault();
-    const authorName = state.authorList.find((author) => author.id === id).name;
+    const authorName = authorList.find((author) => author.id === id).name;
     const newAuthor = {
       id: id,
       name: authorName,
     };
-    const filteredAuthors = state.authorList.filter(
+    const filteredAuthors = authorList.filter(
       (author) => author.id !== newAuthor.id
     );
-    dispatch(Actions.decreaseAuthorListAction(filteredAuthors));
+    setAuthorList([...filteredAuthors]);
     dispatch(Actions.increaseAuthorAction(newAuthor));
   };
 
@@ -54,17 +61,16 @@ export const CreateCourse = () => {
       (author) => author.id !== changeAuthor.id
     );
     dispatch(Actions.decreaseAuthorAction(delFilteredAuthors));
-    dispatch(Actions.increaseAuthorListAction(changeAuthor));
+    setAuthorList([...authorList, { ...changeAuthor }]);
   };
 
   const createCourse = (e) => {
     e.preventDefault();
     if (!state.titleValue || !state.descriptionValue || !state.durationValue) {
       return alert(`
-		    Подтвердите действие на странице localhost:3000
-		    Please, fill in all fields`);
+		  Подтвердите действие на странице localhost:3000
+		  Please, fill in all fields`);
     }
-
     const newCourse = {
       id: generateId(),
       title: state.titleValue,
@@ -73,7 +79,7 @@ export const CreateCourse = () => {
       duration: state.durationValue,
       authors: state.author.map((aut) => aut.id),
     };
-    mockedCoursesList.push(newCourse);
+    dispatchStore(saveCourseAction(newCourse));
     navigate('/courses');
   };
 
@@ -137,7 +143,7 @@ export const CreateCourse = () => {
           </section>
           <section className="authors">
             <h2>Authors</h2>
-            {state.authorList.map((author) => {
+            {authorList.map((author) => {
               keyValue++;
               return (
                 <div className="authors-list" key={keyValue}>

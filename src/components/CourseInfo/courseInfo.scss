@@ -9,7 +9,11 @@
     border: none;
 }
 
-.description {
+.description_article {
+    width: 50%;
+}
+
+.course-info .description {
     display: flex;
     justify-content: flex-start;
     margin: 5rem 7rem 2rem 2rem;
@@ -27,8 +31,9 @@
     width: 50%;
 }
 
-.description div {
-    max-width: fit-content
+.description .main_information {
+    max-width: fit-content;
+    margin-left: 5rem;
 }
 
 span {

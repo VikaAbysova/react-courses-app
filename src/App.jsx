@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Header } from 'components/Header/Header';
 import { Login } from 'components/Login/Login';
@@ -9,15 +9,13 @@ import { CourseInfo } from 'components/CourseInfo/CourseInfo';
 import './app.scss';
 
 function App() {
-  const [userName, setUserName] = useState('');
-  const getUserName = (name) => setUserName(name);
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Header userName={userName} />}>
-          <Route path="login" element={<Login getUserName={getUserName} />} />
-          <Route path="courses" element={<Courses />} />
+        <Route path="/" element={<Header />}>
+          <Route path="login" element={<Login />} />
           <Route path="registration" element={<Registration />} />
+          <Route path="courses" element={<Courses />} />
           <Route path="courses/add" element={<CreateCourse />} />
           <Route path="courses/:courseId" element={<CourseInfo />} />
         </Route>

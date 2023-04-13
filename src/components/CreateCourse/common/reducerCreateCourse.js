@@ -1,21 +1,17 @@
 import {
   DECREASE_AUTHOR,
-  DECREASE_AUTHOR_LIST,
   DESCRIPTION_CHANGE,
   DURATION_CHANGE,
   INCREASE_AUTHOR,
-  INCREASE_AUTHOR_LIST,
   NAME_CHANGE,
   TITLE_CHANGE,
 } from './actionCreateCourseTypes';
-import { defaultAuthorsList } from 'contstants';
 
 export const initialState = {
   nameValue: '',
   titleValue: '',
   durationValue: '',
   descriptionValue: '',
-  authorList: defaultAuthorsList,
   author: [],
 };
 
@@ -29,16 +25,6 @@ export const reducerCreateCourse = (state = initialState, action) => {
       return { ...state, nameValue: action.payload };
     case DURATION_CHANGE:
       return { ...state, durationValue: action.payload };
-    case INCREASE_AUTHOR_LIST:
-      return {
-        ...state,
-        authorList: [...state.authorList, { ...action.payload }],
-      };
-    case DECREASE_AUTHOR_LIST:
-      return {
-        ...state,
-        authorList: [...action.payload],
-      };
     case INCREASE_AUTHOR:
       return {
         ...state,

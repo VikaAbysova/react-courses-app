@@ -1,30 +1,34 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Button } from 'common/Button/Button';
 import { Input } from 'common/Input/Input';
-import { mockedCoursesList } from 'contstants';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCourses } from 'store/selectors';
+import { updateCourseAction } from 'store/courses/actionCreators';
 import './searchBar.scss';
 
-export const SearchBar = ({ changeCourses }) => {
+export const SearchBar = () => {
   const [inputValue, setInputValue] = useState('');
+  const [previousCourses, setPreviousCourses] = useState([]);
+  const courses = useSelector(getCourses);
+  const dispatch = useDispatch();
 
   const onChange = (e) => {
     setInputValue(e.target.value);
     if (!e.target.value) {
-      changeCourses(mockedCoursesList);
+      dispatch(updateCourseAction(previousCourses));
     }
   };
   const searchCourse = (e) => {
     e.preventDefault();
-    const findedCourses = mockedCoursesList.filter(
+    const findedCourses = courses.filter(
       (course) =>
         course.id.toLowerCase().includes(inputValue.toLocaleLowerCase()) ||
         course.title.toLowerCase().includes(inputValue.toLocaleLowerCase())
     );
-    changeCourses(findedCourses);
+    setPreviousCourses(courses);
+    dispatch(updateCourseAction(findedCourses));
   };
-
   return (
     <form className="searchBar">
       <Input
@@ -38,8 +42,4 @@ export const SearchBar = ({ changeCourses }) => {
       <Button onClick={searchCourse}>Search</Button>
     </form>
   );
-};
-
-SearchBar.propTypes = {
-  changeCourses: PropTypes.func,
 };

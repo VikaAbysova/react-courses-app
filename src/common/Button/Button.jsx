@@ -9,7 +9,7 @@ export const Button = ({ children, type, onClick, id }) => (
 );
 
 Button.propTypes = {
-  children: PropTypes.string,
+  children: PropTypes.node,
   onClick: PropTypes.func,
   type: PropTypes.oneOf(['submit', 'button']),
   id: PropTypes.string,

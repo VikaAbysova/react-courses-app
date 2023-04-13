@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from 'common/Button/Button';
 import { Input } from 'common/Input/Input';
+import * as ApiServices from 'store/services';
 import './registration.scss';
 
 export const Registration = () => {
@@ -11,21 +12,12 @@ export const Registration = () => {
 
   const registrationRequest = async (e) => {
     e.preventDefault();
-
     const newUser = {
       name: data.userName,
       email: data.email,
       password: data.password,
     };
-    const response = await fetch('http://localhost:4000/register', {
-      method: 'POST',
-      body: JSON.stringify(newUser),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const result = await response.json();
-
+    const result = await ApiServices.registrationRequestServer(newUser);
     if (result.successful) {
       navigate('/login');
     }
