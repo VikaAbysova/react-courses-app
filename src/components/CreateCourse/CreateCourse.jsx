@@ -18,8 +18,6 @@ import { saveAuthorsAction } from '../../store/authors/actionCreators';
 
 export const CreateCourse = () => {
 	const authors = useSelector(getAuthors);
-	console.log('authors', authors);
-
 	const [titleValue, setTitleValue] = useState('');
 	const [descriptionValue, setDescriptionValue] = useState('');
 	const [nameValue, setNameValue] = useState('');
