@@ -1,232 +1,196 @@
+import React, { useState } from 'react';
+import { useReducer } from 'react';
+import { Input } from 'common/Input/Input';
+import { Button } from 'common/Button/Button';
+import { generateId } from 'contstants';
+import { pipeDuration } from 'helpers/pipeDuration';
+import {
+  initialState,
+  reducerCreateCourse,
+} from './common/reducerCreateCourse';
+import * as Actions from './common/actionsCreateCourse';
+import { useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveCourseAction } from 'store/courses/actionCreators';
+import { saveAuthorsAction } from 'store/authors/actionCreators';
+import { getAuthors } from 'store/selectors';
 import './createCourse.scss';
 
-import React from 'react';
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
-
-import { Input } from '../../common/Input/Input';
-import { Button } from '../../common/Button/Button';
-
-import { BUTTON_TEXT, generateId, mockedAuthorsList } from '../../contstants';
-
-import { pipeDuration } from '../../helpers/pipeDuration';
-
-import { useDispatch, useSelector } from 'react-redux';
-import { saveCourseAction } from '../../store/courses/actionCreators';
-import { getAuthors } from '../../store/selectors';
-import { saveAuthorsAction } from '../../store/authors/actionCreators';
-
 export const CreateCourse = () => {
-	const authors = useSelector(getAuthors);
-	const [titleValue, setTitleValue] = useState('');
-	const [descriptionValue, setDescriptionValue] = useState('');
-	const [nameValue, setNameValue] = useState('');
-	const [durationValue, setDurationValue] = useState('');
-	const [authorList, setAuthorList] = useState(authors);
-	const [author, setAuthor] = useState([]);
+  const [state, dispatch] = useReducer(reducerCreateCourse, initialState);
+  const authorListServ = useSelector(getAuthors);
+  const [authorList, setAuthorList] = useState(authorListServ);
+  const navigate = useNavigate();
+  let keyValue = generateId();
+  const dispatchStore = useDispatch();
 
-	// const [newCourses, setNewCourses] = useState([mockedCoursesList]);
-	const dispatch = useDispatch();
-	// const storeCourses = store.getState().courses;
+  const createAuthor = (e) => {
+    e.preventDefault();
+    const newAuthor = { id: generateId(), name: state.nameValue };
+    if (state.nameValue.length >= 2) {
+      dispatchStore(saveAuthorsAction(newAuthor));
+      if (!authorList.find((el) => el.id === newAuthor.id)) {
+        setAuthorList([...authorList, { ...newAuthor }]);
+      }
+      dispatch(Actions.nameChangeAction(''));
+    }
+  };
 
-	let keyValue = generateId();
+  const addAuthor = (id) => (e) => {
+    e.preventDefault();
+    const authorName = authorList.find((author) => author.id === id).name;
+    const newAuthor = {
+      id: id,
+      name: authorName,
+    };
+    const filteredAuthors = authorList.filter(
+      (author) => author.id !== newAuthor.id
+    );
+    setAuthorList([...filteredAuthors]);
+    dispatch(Actions.increaseAuthorAction(newAuthor));
+  };
 
-	const navigate = useNavigate();
+  const deleteAuthor = (id) => (e) => {
+    e.preventDefault();
+    const authorName = state.author.find((author) => author.id === id).name;
+    const changeAuthor = {
+      id: id,
+      name: authorName,
+    };
+    const delFilteredAuthors = state.author.filter(
+      (author) => author.id !== changeAuthor.id
+    );
+    dispatch(Actions.decreaseAuthorAction(delFilteredAuthors));
+    setAuthorList([...authorList, { ...changeAuthor }]);
+  };
 
-	const titleChange = (e) => {
-		setTitleValue(e.target.value);
-	};
-	const descriptionChange = (e) => {
-		setDescriptionValue(e.target.value);
-	};
-	const nameChange = (e) => {
-		setNameValue(e.target.value);
-	};
-	const durationChange = (e) => {
-		setDurationValue(e.target.value);
-	};
+  const createCourse = (e) => {
+    e.preventDefault();
+    if (!state.titleValue || !state.descriptionValue || !state.durationValue) {
+      return alert(`
+		  Подтвердите действие на странице localhost:3000
+		  Please, fill in all fields`);
+    }
+    const newCourse = {
+      id: generateId(),
+      title: state.titleValue,
+      description: state.descriptionValue,
+      creationDate: new Date().toLocaleDateString(),
+      duration: state.durationValue,
+      authors: state.author.map((aut) => aut.id),
+    };
+    dispatchStore(saveCourseAction(newCourse));
+    navigate('/courses');
+  };
 
-	const createAuthor = (e) => {
-		e.preventDefault();
-		const newAuthor = [{ id: generateId(), name: nameValue }];
-		if (nameValue.length >= 2) {
-			// mockedAuthorsList.push({
-			// 	id: generateId(),
-			// 	name: nameValue,
-			// });
-			const authorCreated = {
-				name: nameValue,
-				id: generateId(),
-			};
-			dispatch(saveAuthorsAction(authorCreated));
-
-			if (!authorList.find((el) => el.id === newAuthor[0].id)) {
-				setAuthorList([...authorList, ...newAuthor]);
-			}
-			setNameValue('');
-		}
-	};
-
-	const addAuthor = (id) => (e) => {
-		e.preventDefault();
-		const authorName = authors.find((author) => author.id === id).name;
-		const newAuthor = [
-			{
-				id: id,
-				name: authorName,
-			},
-		];
-		const filteredAuthors = authorList.filter(
-			(author) => author.id !== newAuthor[0].id
-		);
-		setAuthorList([...filteredAuthors]);
-		setAuthor([...author, ...newAuthor]);
-	};
-
-	const deleteAuthor = (id) => (e) => {
-		e.preventDefault();
-		const delFilteredAuthors = author.filter((author) => author.id !== id);
-		const authorName = authors.find((author) => author.id === id).name;
-		const newAuthor = [
-			{
-				id: id,
-				name: authorName,
-			},
-		];
-		setAuthor([...delFilteredAuthors]);
-		setAuthorList([...authorList, ...newAuthor]);
-	};
-
-	const createCourse = (e) => {
-		e.preventDefault();
-
-		if (!titleValue || !descriptionValue || !durationValue) {
-			return alert(`
-		    Подтвердите действие на странице localhost:3000
-		    Please, fill in all fields`);
-		}
-		const newCourseList = [
-			{
-				id: generateId(),
-				title: titleValue,
-				description: descriptionValue,
-				creationDate: new Date().toLocaleDateString(),
-				duration: durationValue,
-				authors: author.map((aut) => aut.id),
-			},
-		];
-
-		dispatch(saveCourseAction(newCourseList));
-		navigate('/courses');
-	};
-
-	return (
-		<article className='creating-course'>
-			<form>
-				<div className='creating-bar'>
-					<div>
-						<Input
-							labelText={'Title'}
-							inputName={'courseTitle'}
-							inputType={'text'}
-							inputValue={titleValue}
-							onChange={titleChange}
-							placeholderText={'Enter title...'}
-							required={true}
-							minLength={'2'}
-						/>
-					</div>
-					<div>
-						<Button
-							text={BUTTON_TEXT[6]}
-							type={'submit'}
-							onClick={createCourse}
-						/>
-					</div>
-				</div>
-				<label htmlFor='descriptionCourse'>Description</label>
-				<br />
-				<textarea
-					name='descriptionCourse'
-					id='descriptionCourse'
-					cols='40'
-					rows='5'
-					placeholder='Enter description'
-					minLength='2'
-					onChange={descriptionChange}
-					value={descriptionValue}
-					required={true}
-				></textarea>
-				<div className='authors-data'>
-					<section className='authors-adding'>
-						<h2>Add author</h2>
-						<Input
-							labelText={'Author name'}
-							inputType={'text'}
-							inputName={'author-name'}
-							inputValue={nameValue}
-							placeholderText={'Enter author name...'}
-							onChange={nameChange}
-							minLength={'2'}
-							required={true}
-						/>
-						<br />
-						<Button
-							text={BUTTON_TEXT[4]}
-							onClick={createAuthor}
-							id={generateId()}
-						/>
-					</section>
-					<section className='authors'>
-						<h2>Authors</h2>
-						{authorList.map((author) => {
-							keyValue += 1;
-							return (
-								<div className='authors-list' key={keyValue}>
-									<p key={keyValue}>{author.name}</p>
-									<Button
-										text={BUTTON_TEXT[5]}
-										key={author.id}
-										onClick={addAuthor(author.id)}
-									/>
-								</div>
-							);
-						})}
-					</section>
-					<section className='course-duration'>
-						<h2>Duration</h2>
-						<Input
-							labelText={'Duration'}
-							inputType={'number'}
-							inputName={'duration'}
-							inputValue={durationValue}
-							placeholderText={'Enter duration in minutes...'}
-							onChange={durationChange}
-							required={true}
-							min={1}
-						/>
-						<p>
-							Duration: <span>{pipeDuration(durationValue)}</span> hours
-						</p>
-					</section>
-					<section className='course-authors'>
-						<h2>Course authors</h2>
-						{author.map((author) => {
-							keyValue += 1;
-							return (
-								<div className='authors-list' key={keyValue}>
-									<p key={keyValue}>{author.name}</p>
-									<Button
-										text={BUTTON_TEXT[7]}
-										key={author.id}
-										onClick={deleteAuthor(author.id)}
-									/>
-								</div>
-							);
-						})}
-					</section>
-				</div>
-			</form>
-		</article>
-	);
+  return (
+    <article className="creating-course">
+      <form>
+        <div className="creating-bar">
+          <div>
+            <Input
+              labelText={'Title'}
+              inputName={'courseTitle'}
+              inputType={'text'}
+              inputValue={state.titleValue}
+              onChange={(e) =>
+                dispatch(Actions.titleChangeAction(e.target.value))
+              }
+              placeholderText={'Enter title...'}
+              required={true}
+              minLength={'2'}
+            />
+          </div>
+          <div>
+            <Button type={'submit'} onClick={createCourse}>
+              Create course
+            </Button>
+          </div>
+        </div>
+        <label htmlFor="descriptionCourse">Description</label>
+        <br />
+        <textarea
+          name="descriptionCourse"
+          id="descriptionCourse"
+          cols="40"
+          rows="5"
+          placeholder="Enter description"
+          minLength="2"
+          onChange={(e) =>
+            dispatch(Actions.descriptionChangeAction(e.target.value))
+          }
+          value={state.descriptionValue}
+          required={true}></textarea>
+        <div className="authors-data">
+          <section className="authors-adding">
+            <h2>Add author</h2>
+            <Input
+              labelText={'Author name'}
+              inputType={'text'}
+              inputName={'author-name'}
+              inputValue={state.nameValue}
+              placeholderText={'Enter author name...'}
+              onChange={(e) =>
+                dispatch(Actions.nameChangeAction(e.target.value))
+              }
+              minLength={'2'}
+              required={true}
+            />
+            <br />
+            <Button onClick={createAuthor} id={generateId()}>
+              Create author
+            </Button>
+          </section>
+          <section className="authors">
+            <h2>Authors</h2>
+            {authorList.map((author) => {
+              keyValue++;
+              return (
+                <div className="authors-list" key={keyValue}>
+                  <p className="author-names" key={keyValue}>
+                    {author.name}
+                  </p>
+                  <Button key={author.id} onClick={addAuthor(author.id)}>
+                    Add author
+                  </Button>
+                </div>
+              );
+            })}
+          </section>
+          <section className="course-duration">
+            <h2>Duration</h2>
+            <Input
+              labelText={'Duration'}
+              inputType={'number'}
+              inputName={'duration'}
+              inputValue={state.durationValue}
+              placeholderText={'Enter duration in minutes...'}
+              onChange={(e) =>
+                dispatch(Actions.durationChangeAction(e.target.value))
+              }
+              required={true}
+              min={1}
+            />
+            <p className="duration-info">
+              Duration: <span>{pipeDuration(state.durationValue)}</span> hours
+            </p>
+          </section>
+          <section className="course-authors">
+            <h2>Course authors</h2>
+            {state.author.map((author) => {
+              keyValue++;
+              return (
+                <div className="authors-list" key={keyValue}>
+                  <p key={keyValue}>{author.name}</p>
+                  <Button key={author.id} onClick={deleteAuthor(author.id)}>
+                    Delete author
+                  </Button>
+                </div>
+              );
+            })}
+          </section>
+        </div>
+      </form>
+    </article>
+  );
 };

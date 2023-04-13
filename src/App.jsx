@@ -1,14 +1,12 @@
-import './app.scss';
-
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
-import { Header } from './components/Header/Header';
-import { Login } from './components/Login/Login';
-import { Registration } from './components/Registration/Registration';
-import { Courses } from './components/Courses/Courses';
-import { CreateCourse } from './components/CreateCourse/CreateCourse';
-import { CourseInfo } from './components/CourseInfo/CourseInfo';
+import { Header } from 'components/Header/Header';
+import { Login } from 'components/Login/Login';
+import { Registration } from 'components/Registration/Registration';
+import { Courses } from 'components/Courses/Courses';
+import { CreateCourse } from 'components/CreateCourse/CreateCourse';
+import { CourseInfo } from 'components/CourseInfo/CourseInfo';
+import './app.scss';
 
 function App() {
   return (
@@ -25,5 +23,4 @@ function App() {
     </Router>
   );
 }
-
 export default App;

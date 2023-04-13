@@ -5,12 +5,12 @@ import { authorsReducer } from './authors/reducer';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 const rootReducer = combineReducers({
-	user: userReducer,
-	courses: coursesReducer,
-	authors: authorsReducer,
+  user: userReducer,
+  courses: coursesReducer,
+  authors: authorsReducer,
 });
 
 export const store = legacy_createStore(
-	rootReducer,
-	composeWithDevTools(applyMiddleware())
+  rootReducer,
+  composeWithDevTools(applyMiddleware())
 );

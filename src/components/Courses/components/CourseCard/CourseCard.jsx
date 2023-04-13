@@ -1,20 +1,14 @@
-import './courseCard.scss';
-
 import React from 'react';
 import { useNavigate } from 'react-router';
-
 import PropTypes from 'prop-types';
-
-import { Button } from '../../../../common/Button/Button';
-import { BUTTON_TEXT } from '../../../../contstants';
-import { dateGenerator } from '../../../../helpers/dateGeneratop';
-
+import { Button } from 'common/Button/Button';
+import { dateGenerator } from 'helpers/dateGeneratop';
 import { BsPencilFill } from 'react-icons/bs';
 import { IoTrashSharp } from 'react-icons/io5';
-
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteCourseAction } from '../../../../store/courses/actionCreators';
-import { getCourses } from '../../../../store/selectors';
+import { deleteCourseAction } from 'store/courses/actionCreators';
+import { getCourses } from 'store/selectors';
+import './courseCard.scss';
 
 export const CourseCard = ({
   id,
@@ -25,9 +19,10 @@ export const CourseCard = ({
   authorsNames,
   setCoursesStatus,
 }) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const courses = useSelector(getCourses);
+  const navigate = useNavigate();
+  const showCourse = () => navigate(`/courses/${id}`);
 
   const deleteCourse = () => {
     const filteredCourses = courses.filter((course) => course.id !== id);
@@ -36,38 +31,30 @@ export const CourseCard = ({
   };
 
   return (
-    <article className="course-card">
+    <article className="course_card">
       <section>
         <h1>{title}</h1>
         <p>{description}</p>
       </section>
-      <div>
-        <p className="authors-ellipsis">
+      <div className="card_body">
+        <p className="authors_ellipsis information">
           <span>Authors:</span> {authorsNames.join(', ')}
         </p>
-        <p>
+        <p className="information">
           <span>Duration:</span> {duration} hours
         </p>
-        <p>
+        <p className="information">
           <span>Created:</span> {dateGenerator(creationDate)}
         </p>
-        <Button
-          type="button"
-          text={BUTTON_TEXT[3]}
-          onClick={() => navigate(`/courses/${id}`)}
-        />
-        <Button
-          type="button"
-          text={<BsPencilFill className="icon" />}
-          className={'icon'}
-          //onClick={() => navigate(`/courses/${id}`)}
-        />
-        <Button
-          type="button"
-          text={<IoTrashSharp className="icon" />}
-          className={'icon'}
-          onClick={deleteCourse}
-        />
+        <Button type="button" onClick={showCourse}>
+          Show course
+        </Button>
+        <Button type="button" id="icon">
+          {<BsPencilFill />}
+        </Button>
+        <Button type="button" id="icon" onClick={deleteCourse}>
+          {<IoTrashSharp />}
+        </Button>
       </div>
     </article>
   );
