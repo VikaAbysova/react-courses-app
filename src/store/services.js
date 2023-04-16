@@ -10,6 +10,18 @@ export const loginRequest = async (credentials) => {
   return result;
 };
 
+export const registrationRequestServer = async (newUser) => {
+  const response = await fetch('http://localhost:4000/register', {
+    method: 'POST',
+    body: JSON.stringify(newUser),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const result = await response.json();
+  return result;
+};
+
 export const getCoursesRequest = async () => {
   const response = await fetch('http://localhost:4000/courses/all');
   const result = await response.json();
@@ -75,7 +87,6 @@ export const deleteCourse = async (id) => {
 };
 
 export const updateCourseRequest = async (id, course) => {
-  console.log('args', id, course);
   const url = `http://localhost:4000/courses/${id}`;
   const response = await fetch(url, {
     method: 'PUT',
@@ -86,6 +97,5 @@ export const updateCourseRequest = async (id, course) => {
     },
   });
   const result = await response.json();
-  console.log('update course', result);
   return result;
 };

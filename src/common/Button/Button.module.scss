@@ -1,0 +1,14 @@
+.btn_default {
+    border: 1px solid violet;
+    background-color: bisque;
+    padding: 0.5rem 2rem;
+    font-size: inherit;
+    cursor: pointer;
+    transition: 0.5s;
+    border-radius: 0.7rem;
+    overflow: hidden;
+}
+
+.btn_default:hover {
+    box-shadow: 0px 0px 10px 5px #fcc5e3;
+}

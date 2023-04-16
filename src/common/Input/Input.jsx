@@ -1,8 +1,6 @@
-import './input.scss';
-
 import React from 'react';
-
 import PropTypes from 'prop-types';
+import styles from './Input.module.scss';
 
 export const Input = ({
   labelText,
@@ -28,6 +26,7 @@ export const Input = ({
         minLength={minLength}
         min={min}
         required={required}
+        className={styles.input_default}
       />
     </>
   );
@@ -44,5 +43,3 @@ Input.propTypes = {
   minLength: PropTypes.string,
   min: PropTypes.number,
 };
-
-// export default Input;

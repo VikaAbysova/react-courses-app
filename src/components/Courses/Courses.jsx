@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { BUTTON_TEXT } from 'contstants';
 import { CourseCard } from './components/CourseCard/CourseCard';
 import { SearchBar } from './components/SearchBar/SearchBar';
 import { Button } from 'common/Button/Button';
@@ -14,15 +12,13 @@ import { getAuthorsAll } from 'store/authors/thunk';
 import './courses.scss';
 
 export const Courses = () => {
-  const [coursesStatus, setCoursesStatus] = useState(true);
-
   const dispatch = useDispatch();
   const courses = useSelector(getCourses);
   const authors = useSelector(getAuthors);
   const userRole = useSelector(getUser).role;
   const navigate = useNavigate();
   const disabled = userRole === 'admin' ? false : true;
-  const className = userRole !== 'admin' ? 'not-allowed' : 'pointer';
+  const idBtn = userRole !== 'admin' ? 'not-allowed' : 'pointer';
 
   const callCurrentUser = () => {
     dispatch(currentUser());
@@ -39,25 +35,19 @@ export const Courses = () => {
     if (!authors.length) {
       getAuthorthList();
     }
-  }, [authors]);
-
-  useEffect(() => {
-    if (!courses.length && coursesStatus) {
+    if (!courses.length) {
       getCoursesList();
     }
-  }, [courses]);
+  }, [authors, courses]);
 
   return (
     <>
       <main className="courses">
         <div className="actions">
           <SearchBar previousCourses={courses} />
-          <Button
-            text={BUTTON_TEXT[2]}
-            onClick={callCurrentUser}
-            disabled={disabled}
-            className={className}
-          />
+          <Button onClick={callCurrentUser} disabled={disabled} id={idBtn}>
+            Add new course
+          </Button>
         </div>
         {courses.map((course) => {
           const authorsNames = course.authors.map(
@@ -69,7 +59,6 @@ export const Courses = () => {
               {...course}
               authorsNames={authorsNames}
               duration={pipeDuration(course.duration)}
-              setCoursesStatus={() => setCoursesStatus(false)}
             />
           );
         })}

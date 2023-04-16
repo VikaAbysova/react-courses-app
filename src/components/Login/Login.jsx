@@ -1,16 +1,12 @@
-import './login.scss';
-
 import React from 'react';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
-import { Input } from '../../common/Input/Input';
-import { Button } from '../../common/Button/Button';
-
-import * as ApiServices from '../../store/services';
+import { Input } from 'common/Input/Input';
+import { Button } from 'common/Button/Button';
+import * as ApiServices from 'store/services';
 import { useDispatch } from 'react-redux';
-import { userLoginAction } from '../../store/user/actionCreators';
-import { currentUser } from '../../store/user/thunk';
+import { userLoginAction } from 'store/user/actionCreators';
+import './login.scss';
 
 export const Login = () => {
   const [data, setData] = useState({ email: '', password: '' });
@@ -34,7 +30,6 @@ export const Login = () => {
       };
       localStorage.setItem('token', `${result.result}`);
       dispatch(userLoginAction(user));
-      // dispatch(currentUser());
       navigate('/courses');
     }
   };
@@ -65,7 +60,7 @@ export const Login = () => {
             onChange={(e) => setData({ ...data, password: e.target.value })}
           />
         </div>
-        <Button text={'Login'} type={'submit'} />
+        <Button type={'submit'}>Login</Button>
         <p>
           If you not have an account you can{' '}
           <Link to={'/registration'}>Registration</Link>

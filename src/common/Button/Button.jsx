@@ -1,25 +1,22 @@
-import './button.scss';
-
 import React from 'react';
-
 import PropTypes from 'prop-types';
+import style from './Button.module.scss';
 
-export const Button = ({ text, onClick, type, id, disabled, className }) => (
+export const Button = ({ children, type, onClick, id, disabled }) => (
   <button
     type={type}
     onClick={onClick}
     id={id}
-    disabled={disabled}
-    className={className}>
-    {text}
+    className={style.btn_default}
+    disabled={disabled}>
+    {children}
   </button>
 );
 
 Button.propTypes = {
-  text: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  children: PropTypes.node,
   onClick: PropTypes.func,
   type: PropTypes.oneOf(['submit', 'button']),
   id: PropTypes.string,
   disabled: PropTypes.bool,
-  className: PropTypes.string,
 };

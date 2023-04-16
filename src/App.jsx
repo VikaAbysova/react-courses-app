@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Header } from './components/Header/Header';
-import { Login } from './components/Login/Login';
-import { Registration } from './components/Registration/Registration';
-import { Courses } from './components/Courses/Courses';
-import { CourseForm } from './components/CourseForm/CourseForm';
+import { Header } from 'components/Header/Header';
+import { Login } from 'components/Login/Login';
+import { Registration } from 'components/Registration/Registration';
+import { Courses } from 'components/Courses/Courses';
+import { CourseForm } from './components/CreateCourse/CourseForm';
 import { CourseInfo } from './components/CourseInfo/CourseInfo';
 import PrivateRouter from 'components/PrivateRouter/PrivateRouter';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUser } from './store/selectors';
-import { currentUser } from './store/user/thunk';
+import { getUser } from 'store/selectors';
+import { currentUser } from 'store/user/thunk';
 import './app.scss';
 
 function App() {
@@ -42,5 +42,4 @@ function App() {
     </Router>
   );
 }
-
 export default App;

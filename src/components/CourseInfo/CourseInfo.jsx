@@ -1,36 +1,29 @@
-import './courseInfo.scss';
-
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
-import { Button } from '../../common/Button/Button';
-
-import { dateGenerator } from '../../helpers/dateGeneratop';
-import { pipeDuration } from '../../helpers/pipeDuration';
-
-import { getAuthors, getCourses } from '../../store/selectors';
+import { Button } from 'common/Button/Button';
+import { dateGenerator } from 'helpers/dateGeneratop';
+import { pipeDuration } from 'helpers/pipeDuration';
+import { getAuthors, getCourses } from 'store/selectors';
+import './courseInfo.scss';
 
 export const CourseInfo = () => {
   const navigate = useNavigate();
   const params = useParams();
   const courses = useSelector(getCourses);
   const authors = useSelector(getAuthors);
-
   const showedCourse = courses.find((course) => course.id === params.courseId);
+  const backtoCourse = () => navigate('/courses');
 
   return (
     <section className="course-info">
       <div>
-        <Button
-          text={'ᐸ Back to courses'}
-          onClick={() => navigate('/courses')}
-        />
+        <Button onClick={backtoCourse}>ᐸ Back to courses</Button>
       </div>
       <h1>{showedCourse.title}</h1>
       <div className="description">
-        <p>{showedCourse.description}</p>
-        <div>
+        <p className="description_article">{showedCourse.description}</p>
+        <div className="main_information">
           <p>
             <span>ID:</span> {showedCourse.id}
           </p>

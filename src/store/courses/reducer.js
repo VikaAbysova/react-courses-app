@@ -12,7 +12,7 @@ export const coursesReducer = (state = coursesInitialState, action) => {
     case GET_COURSES:
       return [...action.payload];
     case SAVE_COURSE:
-      return [...state, ...action.payload];
+      return [...state, { ...action.payload }];
     case UPDATE_COURSE:
       return [...action.payload];
     case DELETE_COURSE:

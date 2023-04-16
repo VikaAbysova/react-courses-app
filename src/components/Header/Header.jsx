@@ -1,18 +1,13 @@
-import './header.scss';
-
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-
-import { Button } from '../../common/Button/Button';
+import { Button } from 'common/Button/Button';
 import { Logo } from './components/Logo/Logo';
-
-import { BUTTON_TEXT } from '../../contstants';
-
 import { useDispatch, useSelector } from 'react-redux';
-import { userLogoutAction } from '../../store/user/actionCreators';
-import { getUser } from '../../store/selectors';
-import * as ApiServices from '../../store/services';
+import { userLogoutAction } from 'store/user/actionCreators';
+import { getUser } from 'store/selectors';
+import * as ApiServices from 'store/services';
+import './header.scss';
 
 export const Header = () => {
   const location = useLocation();
@@ -43,10 +38,12 @@ export const Header = () => {
     <>
       <header className="header">
         <Logo />
-        <div>
-          {localStorage.token && <p>{userName}</p>}
+        <div className="header-body">
+          {localStorage.token && <p className="user-name">{userName}</p>}
           {!showLogoutBtn && (
-            <Button type="button" text={BUTTON_TEXT[0]} onClick={logout} />
+            <Button type="button" onClick={logout}>
+              Logout
+            </Button>
           )}
         </div>
       </header>
