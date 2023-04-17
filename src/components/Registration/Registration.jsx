@@ -22,7 +22,6 @@ export const Registration = () => {
       navigate('/login');
     }
   };
-
   return (
     <section className="registration">
       <h1>Registration</h1>

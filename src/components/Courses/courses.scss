@@ -1,14 +1,22 @@
 .courses {
-    border: 1px solid lightskyblue;
-    background-color: rgb(232, 227, 227);
-    height: 100%;
-    margin-top: 2rem;
-    padding-bottom: 10%;
+  border: 1px solid lightskyblue;
+  background-color: rgb(232, 227, 227);
+  height: 100%;
+  margin-top: 30px;
+  padding-bottom: 10%;
 }
 
 .courses .actions {
-    display: flex;
-    margin: 2rem;
-    justify-content: space-between;
-    align-items: flex-end;
+  display: flex;
+  margin: 30px;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+#not-allowed:hover {
+  cursor: not-allowed;
+}
+
+#pointer:hover {
+  cursor: pointer;
 }

@@ -1,13 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button } from 'common/Button/Button';
-import { dateGenerator } from 'helpers/dateGeneratop';
 import { BsPencilFill } from 'react-icons/bs';
 import { IoTrashSharp } from 'react-icons/io5';
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteCourseAction } from 'store/courses/actionCreators';
-import { getCourses } from 'store/selectors';
+import { getUser } from 'store/selectors';
+import * as ApiServices from 'store/services';
+import { getCoursesAll } from 'store/courses/thunk';
 import './courseCard.scss';
 
 export const CourseCard = ({
@@ -19,15 +19,20 @@ export const CourseCard = ({
   authorsNames,
   setCoursesStatus,
 }) => {
-  const dispatch = useDispatch();
-  const courses = useSelector(getCourses);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userRole = useSelector(getUser).role;
+
   const showCourse = () => navigate(`/courses/${id}`);
 
-  const deleteCourse = () => {
-    const filteredCourses = courses.filter((course) => course.id !== id);
-    setCoursesStatus();
-    dispatch(deleteCourseAction(filteredCourses));
+  const updateCourse = () => navigate(`/courses/update/${id}`);
+
+  const deleteCourse = async () => {
+    const deletedCourseRequest = await ApiServices.deleteCourse(id);
+    // setCoursesStatus();
+    if (deletedCourseRequest.successful) {
+      dispatch(getCoursesAll());
+    }
   };
 
   return (
@@ -44,17 +49,21 @@ export const CourseCard = ({
           <span>Duration:</span> {duration} hours
         </p>
         <p className="information">
-          <span>Created:</span> {dateGenerator(creationDate)}
+          <span>Created:</span> {creationDate}
         </p>
         <Button type="button" onClick={showCourse}>
           Show course
         </Button>
-        <Button type="button" id="icon">
-          {<BsPencilFill />}
-        </Button>
-        <Button type="button" id="icon" onClick={deleteCourse}>
-          {<IoTrashSharp />}
-        </Button>
+        {userRole === 'admin' && (
+          <Button type="button" id="icon" onClick={updateCourse}>
+            {<BsPencilFill />}
+          </Button>
+        )}
+        {userRole === 'admin' && (
+          <Button type="button" id="icon" onClick={deleteCourse}>
+            {<IoTrashSharp />}
+          </Button>
+        )}
       </div>
     </article>
   );

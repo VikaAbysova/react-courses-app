@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useReducer } from 'react';
 import { Input } from 'common/Input/Input';
 import { Button } from 'common/Button/Button';
@@ -9,26 +9,55 @@ import {
   reducerCreateCourse,
 } from './common/reducerCreateCourse';
 import * as Actions from './common/actionsCreateCourse';
-import { useNavigate } from 'react-router';
+import * as ApiServices from 'store/services';
+import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { saveCourseAction } from 'store/courses/actionCreators';
-import { saveAuthorsAction } from 'store/authors/actionCreators';
-import { getAuthors } from 'store/selectors';
-import './createCourse.scss';
+import { getAuthors, getCourses } from 'store/selectors';
+import { getCoursesAll } from 'store/courses/thunk';
+import { getAuthorsAll } from 'store/authors/thunk';
+import './courseForm.scss';
 
-export const CreateCourse = () => {
+export const CourseForm = () => {
   const [state, dispatch] = useReducer(reducerCreateCourse, initialState);
   const authorListServ = useSelector(getAuthors);
+  const courses = useSelector(getCourses);
   const [authorList, setAuthorList] = useState(authorListServ);
   const navigate = useNavigate();
-  let keyValue = generateId();
   const dispatchStore = useDispatch();
+  let keyValue = generateId();
 
-  const createAuthor = (e) => {
+  const param = useParams();
+  const updateCourse = courses.find((course) => course.id === param.courseId);
+  let authorListParam = param.courseId
+    ? authorListServ.filter((author) =>
+        updateCourse.authors.every((id) => author.id !== id)
+      )
+    : [];
+  const [paramsAuth, setParamsAuth] = useState(
+    param.courseId ? updateCourse.authors : []
+  );
+
+  useEffect(() => {
+    if (param.courseId) {
+      dispatch(Actions.titleChangeAction(updateCourse.title));
+      dispatch(Actions.descriptionChangeAction(updateCourse.description));
+      dispatch(Actions.durationChangeAction(updateCourse.duration.toString()));
+      setAuthorList(authorListParam);
+    }
+  }, []);
+
+  const createAuthor = async (e) => {
     e.preventDefault();
-    const newAuthor = { id: generateId(), name: state.nameValue };
     if (state.nameValue.length >= 2) {
-      dispatchStore(saveAuthorsAction(newAuthor));
+      const authorCreated = {
+        name: state.nameValue,
+      };
+      const postAuthor = await ApiServices.saveNewAuthor(authorCreated);
+      if (postAuthor.successful) {
+        dispatchStore(getAuthorsAll());
+      }
+      const newAuthor = { name: state.nameValue, id: postAuthor.result.id };
+
       if (!authorList.find((el) => el.id === newAuthor.id)) {
         setAuthorList([...authorList, { ...newAuthor }]);
       }
@@ -38,7 +67,7 @@ export const CreateCourse = () => {
 
   const addAuthor = (id) => (e) => {
     e.preventDefault();
-    const authorName = authorList.find((author) => author.id === id).name;
+    const authorName = authorListServ.find((author) => author.id === id).name;
     const newAuthor = {
       id: id,
       name: authorName,
@@ -46,25 +75,29 @@ export const CreateCourse = () => {
     const filteredAuthors = authorList.filter(
       (author) => author.id !== newAuthor.id
     );
+    param.courseId
+      ? setParamsAuth([...paramsAuth, id])
+      : dispatch(Actions.increaseAuthorAction(newAuthor));
     setAuthorList([...filteredAuthors]);
-    dispatch(Actions.increaseAuthorAction(newAuthor));
   };
 
   const deleteAuthor = (id) => (e) => {
     e.preventDefault();
-    const authorName = state.author.find((author) => author.id === id).name;
+    const authorName = authorListServ.find((author) => author.id === id).name;
     const changeAuthor = {
       id: id,
       name: authorName,
     };
-    const delFilteredAuthors = state.author.filter(
-      (author) => author.id !== changeAuthor.id
-    );
-    dispatch(Actions.decreaseAuthorAction(delFilteredAuthors));
-    setAuthorList([...authorList, { ...changeAuthor }]);
+    const delFilteredAuthors = param.courseId
+      ? paramsAuth.filter((idAuth) => idAuth !== id)
+      : state.author.filter((author) => author.id !== id);
+    param.courseId
+      ? setParamsAuth([...delFilteredAuthors])
+      : dispatch(Actions.decreaseAuthorAction(delFilteredAuthors));
+    setAuthorList([...authorList, changeAuthor]);
   };
 
-  const createCourse = (e) => {
+  const createCourse = async (e) => {
     e.preventDefault();
     if (!state.titleValue || !state.descriptionValue || !state.durationValue) {
       return alert(`
@@ -72,15 +105,35 @@ export const CreateCourse = () => {
 		  Please, fill in all fields`);
     }
     const newCourse = {
-      id: generateId(),
       title: state.titleValue,
       description: state.descriptionValue,
       creationDate: new Date().toLocaleDateString(),
-      duration: state.durationValue,
+      duration: +state.durationValue,
       authors: state.author.map((aut) => aut.id),
     };
-    dispatchStore(saveCourseAction(newCourse));
-    navigate('/courses');
+    const postCourse = await ApiServices.saveNewCourse(newCourse);
+    if (postCourse.successful) {
+      dispatchStore(getCoursesAll());
+      navigate('/courses');
+    }
+  };
+
+  const courseUpdate = async (e) => {
+    e.preventDefault();
+    const updateCourseCard = {
+      title: state.titleValue,
+      description: state.descriptionValue,
+      duration: +state.durationValue,
+      authors: paramsAuth.map((id) => id),
+    };
+    const updateCourse = await ApiServices.updateCourseRequest(
+      param.courseId,
+      updateCourseCard
+    );
+    if (updateCourse.successful) {
+      dispatchStore(getCoursesAll());
+      navigate('/courses');
+    }
   };
 
   return (
@@ -102,8 +155,10 @@ export const CreateCourse = () => {
             />
           </div>
           <div>
-            <Button type={'submit'} onClick={createCourse}>
-              Create course
+            <Button
+              type={'submit'}
+              onClick={param.courseId ? courseUpdate : createCourse}>
+              {param.courseId ? 'Update course' : 'Create course'}
             </Button>
           </div>
         </div>
@@ -177,6 +232,21 @@ export const CreateCourse = () => {
           </section>
           <section className="course-authors">
             <h2>Course authors</h2>
+            {param.courseId &&
+              paramsAuth.map((id) => {
+                const authName = authorListServ.find(
+                  (auth) => auth.id === id
+                ).name;
+                keyValue += 1;
+                return (
+                  <div className="authors-list" key={keyValue}>
+                    <p key={keyValue}>{authName}</p>
+                    <Button key={id} onClick={deleteAuthor(id)}>
+                      Delete author
+                    </Button>
+                  </div>
+                );
+              })}
             {state.author.map((author) => {
               keyValue++;
               return (

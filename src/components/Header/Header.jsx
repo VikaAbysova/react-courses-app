@@ -6,6 +6,7 @@ import { Logo } from './components/Logo/Logo';
 import { useDispatch, useSelector } from 'react-redux';
 import { userLogoutAction } from 'store/user/actionCreators';
 import { getUser } from 'store/selectors';
+import * as ApiServices from 'store/services';
 import './header.scss';
 
 export const Header = () => {
@@ -22,6 +23,7 @@ export const Header = () => {
   const logout = () => {
     if (localStorage.token) {
       dispatch(userLogoutAction());
+      ApiServices.logoutRequest();
       localStorage.removeItem('token');
       setToken('');
       navigate('login');
