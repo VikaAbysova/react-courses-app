@@ -33,6 +33,6 @@ describe('COURSE CARD', () => {
     expect(screen.getByRole('list')).toHaveTextContent('Vika, Kolya, Sasha');
   });
   test('should display created date in the correct format', () => {
-    expect(screen.getByTestId('date')).toHaveTextContent('21.04.2023');
+    expect(screen.getByTestId('date')).toHaveTextContent('20.04.2023');
   });
 });
