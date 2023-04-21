@@ -39,7 +39,10 @@ export const Header = () => {
       <header className="header">
         <Logo />
         <div className="header-body">
-          {localStorage.token && <p className="user-name">{userName}</p>}
+          <p data-testid="user-name" className="user-name">
+            {userName}
+          </p>
+
           {!showLogoutBtn && (
             <Button type="button" onClick={logout}>
               Logout

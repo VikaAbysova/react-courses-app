@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Button } from 'common/Button/Button';
-import { dateGenerator } from 'helpers/dateGeneratop';
+import { dateGenerator } from 'helpers/dateGenerator';
 import { pipeDuration } from 'helpers/pipeDuration';
 import { getAuthors, getCourses } from 'store/selectors';
 import './courseInfo.scss';
@@ -31,7 +31,7 @@ export const CourseInfo = () => {
             <span>Duration:</span> {pipeDuration(showedCourse.duration)} hours
           </p>
           <p>
-            <span>Created:</span> {dateGenerator(showedCourse.creationDate)}
+            <span>Created:</span> {showedCourse.creationDate}
           </p>
           <div>
             <span>Authors:</span>

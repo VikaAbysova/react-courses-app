@@ -4,11 +4,12 @@
       "@babel/preset-env",
       {
         "targets": {
-          "esmodules": true
+          "esmodules": true,
+          "node": "current"
         }
       }
     ],
-    "@babel/preset-react"
+    ["@babel/preset-react", { "runtime": "automatic" }]
   ],
   "plugins": [
     [

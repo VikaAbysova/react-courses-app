@@ -16,6 +16,7 @@ import { getAuthors, getCourses } from 'store/selectors';
 import { getCoursesAll } from 'store/courses/thunk';
 import { getAuthorsAll } from 'store/authors/thunk';
 import './courseForm.scss';
+import { dateGenerator } from 'helpers/dateGenerator';
 
 export const CourseForm = () => {
   const [state, dispatch] = useReducer(reducerCreateCourse, initialState);
@@ -107,7 +108,7 @@ export const CourseForm = () => {
     const newCourse = {
       title: state.titleValue,
       description: state.descriptionValue,
-      creationDate: new Date().toLocaleDateString(),
+      creationDate: dateGenerator(new Date()),
       duration: +state.durationValue,
       authors: state.author.map((aut) => aut.id),
     };

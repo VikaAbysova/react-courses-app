@@ -9,6 +9,7 @@ import { getUser } from 'store/selectors';
 import * as ApiServices from 'store/services';
 import { getCoursesAll } from 'store/courses/thunk';
 import './courseCard.scss';
+import { dateGenerator } from 'helpers/dateGenerator';
 
 export const CourseCard = ({
   id,
@@ -39,17 +40,17 @@ export const CourseCard = ({
     <article className="course_card">
       <section>
         <h1>{title}</h1>
-        <p>{description}</p>
+        <p role="textbox">{description}</p>
       </section>
       <div className="card_body">
-        <p className="authors_ellipsis information">
+        <p role="list" className="authors_ellipsis information">
           <span>Authors:</span> {authorsNames.join(', ')}
         </p>
-        <p className="information">
+        <p role="term" className="information">
           <span>Duration:</span> {duration} hours
         </p>
-        <p className="information">
-          <span>Created:</span> {creationDate}
+        <p data-testid="date" className="information">
+          <span>Created:</span> {dateGenerator(creationDate)}
         </p>
         <Button type="button" onClick={showCourse}>
           Show course
