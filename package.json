@@ -7,7 +7,7 @@
     "serve": "webpack serve --mode development",
     "build": "webpack --mode production",
     "prepare": "husky install",
-    "prepublish": "npm run eslint:fix",
+    "prepublish": "npm run eslint:fix && npm run test",
     "pre-commit": "lint-staged",
     "eslint": "eslint --ext .js --ext .jsx src",
     "eslint:fix": "eslint --fix --ext .js --ext .jsx src",
