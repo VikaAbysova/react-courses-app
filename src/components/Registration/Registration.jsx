@@ -9,6 +9,9 @@ import './registration.scss';
 export const Registration = () => {
   const [data, setData] = useState({ userName: '', email: '', password: '' });
   const navigate = useNavigate();
+  const emailChange = (e) => setData({ ...data, email: e.target.value });
+  const nameChange = (e) => setData({ ...data, userName: e.target.value });
+  const passwordChange = (e) => setData({ ...data, password: e.target.value });
 
   const registrationRequest = async (e) => {
     e.preventDefault();
@@ -34,7 +37,7 @@ export const Registration = () => {
             inputValue={data.userName}
             placeholderText={'Enter name'}
             required={true}
-            onChange={(e) => setData({ ...data, userName: e.target.value })}
+            onChange={nameChange}
           />
         </div>
         <div>
@@ -44,7 +47,7 @@ export const Registration = () => {
             inputType={'email'}
             inputValue={data.email}
             placeholderText={'Enter email'}
-            onChange={(e) => setData({ ...data, email: e.target.value })}
+            onChange={emailChange}
             required={true}
           />
         </div>
@@ -56,7 +59,7 @@ export const Registration = () => {
             inputValue={data.password}
             placeholderText={'Enter password'}
             required={true}
-            onChange={(e) => setData({ ...data, password: e.target.value })}
+            onChange={passwordChange}
           />
         </div>
         <Button type={'submit'}>Registration</Button>

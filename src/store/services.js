@@ -57,7 +57,6 @@ export const saveNewCourse = async (newCourse) => {
     },
   });
   const result = await response.json();
-  console.log('saveNewCourse', result);
   return result;
 };
 

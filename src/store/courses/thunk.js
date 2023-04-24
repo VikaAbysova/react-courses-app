@@ -8,5 +8,4 @@ export const getCoursesAll = () => async (dispatch) => {
     type: GET_COURSES,
     payload: res.result,
   });
-  console.log('res', res);
 };

@@ -13,6 +13,9 @@ export const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const emailChange = (e) => setData({ ...data, email: e.target.value });
+  const passwordChange = (e) => setData({ ...data, password: e.target.value });
+
   const userLogin = async (e) => {
     e.preventDefault();
     const credentials = {
@@ -45,7 +48,7 @@ export const Login = () => {
             inputType={'email'}
             inputValue={data.email}
             placeholderText={'Enter email'}
-            onChange={(e) => setData({ ...data, email: e.target.value })}
+            onChange={emailChange}
             required={true}
           />
         </div>
@@ -57,7 +60,7 @@ export const Login = () => {
             inputValue={data.password}
             placeholderText={'Enter password'}
             required={true}
-            onChange={(e) => setData({ ...data, password: e.target.value })}
+            onChange={passwordChange}
           />
         </div>
         <Button type={'submit'}>Login</Button>
