@@ -1,3 +1,5 @@
+export const BASE_URL = 'localhost';
+
 export const BUTTON_TEXT = [
   'Logout',
   'Search',

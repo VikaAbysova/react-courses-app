@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Input } from 'common/Input/Input';
 import { Button } from 'common/Button/Button';
-import * as ApiServices from 'store/services';
+import * as ApiServices from 'store/api/services';
 import { useDispatch } from 'react-redux';
 import { userLoginAction } from 'store/user/actionCreators';
 import './login.scss';
@@ -12,6 +12,9 @@ export const Login = () => {
   const [data, setData] = useState({ email: '', password: '' });
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const emailChange = (e) => setData({ ...data, email: e.target.value });
+  const passwordChange = (e) => setData({ ...data, password: e.target.value });
 
   const userLogin = async (e) => {
     e.preventDefault();
@@ -45,7 +48,7 @@ export const Login = () => {
             inputType={'email'}
             inputValue={data.email}
             placeholderText={'Enter email'}
-            onChange={(e) => setData({ ...data, email: e.target.value })}
+            onChange={emailChange}
             required={true}
           />
         </div>
@@ -57,7 +60,7 @@ export const Login = () => {
             inputValue={data.password}
             placeholderText={'Enter password'}
             required={true}
-            onChange={(e) => setData({ ...data, password: e.target.value })}
+            onChange={passwordChange}
           />
         </div>
         <Button type={'submit'}>Login</Button>

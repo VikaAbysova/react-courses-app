@@ -9,12 +9,13 @@ import {
   reducerCreateCourse,
 } from './common/reducerCreateCourse';
 import * as Actions from './common/actionsCreateCourse';
-import * as ApiServices from 'store/services';
+import * as ApiServices from 'store/api/services';
 import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthors, getCourses } from 'store/selectors';
 import { getCoursesAll } from 'store/courses/thunk';
 import { getAuthorsAll } from 'store/authors/thunk';
+import { dateGenerator } from 'helpers/dateGenerator';
 import './courseForm.scss';
 
 export const CourseForm = () => {
@@ -45,6 +46,15 @@ export const CourseForm = () => {
       setAuthorList(authorListParam);
     }
   }, []);
+
+  const titleChange = (e) =>
+    dispatch(Actions.titleChangeAction(e.target.value));
+  const descriptionChange = (e) =>
+    dispatch(Actions.descriptionChangeAction(e.target.value));
+  const authorNameChange = (e) =>
+    dispatch(Actions.nameChangeAction(e.target.value));
+  const durationChange = (e) =>
+    dispatch(Actions.durationChangeAction(e.target.value));
 
   const createAuthor = async (e) => {
     e.preventDefault();
@@ -107,7 +117,7 @@ export const CourseForm = () => {
     const newCourse = {
       title: state.titleValue,
       description: state.descriptionValue,
-      creationDate: new Date().toLocaleDateString(),
+      creationDate: dateGenerator(new Date()),
       duration: +state.durationValue,
       authors: state.author.map((aut) => aut.id),
     };
@@ -146,9 +156,7 @@ export const CourseForm = () => {
               inputName={'courseTitle'}
               inputType={'text'}
               inputValue={state.titleValue}
-              onChange={(e) =>
-                dispatch(Actions.titleChangeAction(e.target.value))
-              }
+              onChange={titleChange}
               placeholderText={'Enter title...'}
               required={true}
               minLength={'2'}
@@ -171,9 +179,7 @@ export const CourseForm = () => {
           rows="5"
           placeholder="Enter description"
           minLength="2"
-          onChange={(e) =>
-            dispatch(Actions.descriptionChangeAction(e.target.value))
-          }
+          onChange={descriptionChange}
           value={state.descriptionValue}
           required={true}></textarea>
         <div className="authors-data">
@@ -185,9 +191,7 @@ export const CourseForm = () => {
               inputName={'author-name'}
               inputValue={state.nameValue}
               placeholderText={'Enter author name...'}
-              onChange={(e) =>
-                dispatch(Actions.nameChangeAction(e.target.value))
-              }
+              onChange={authorNameChange}
               minLength={'2'}
               required={true}
             />
@@ -220,9 +224,7 @@ export const CourseForm = () => {
               inputName={'duration'}
               inputValue={state.durationValue}
               placeholderText={'Enter duration in minutes...'}
-              onChange={(e) =>
-                dispatch(Actions.durationChangeAction(e.target.value))
-              }
+              onChange={durationChange}
               required={true}
               min={1}
             />

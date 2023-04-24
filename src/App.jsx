@@ -34,7 +34,7 @@ function App() {
             <Route path="courses/update/:courseId" element={<CourseForm />} />
           </Route>
           <Route path="courses/:courseId" element={<CourseInfo />} />
-          <Route path="courses" element={<Courses />} />
+          <Route exact path="/courses" element={<Courses />} />
           <Route path="login" element={<Login />} />
           <Route path="registration" element={<Registration />} />
         </Route>
