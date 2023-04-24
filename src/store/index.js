@@ -1,4 +1,5 @@
-import { legacy_createStore, combineReducers, applyMiddleware } from 'redux';
+import { combineReducers, applyMiddleware } from 'redux';
+import { createStore } from 'redux';
 import { userReducer } from './user/reducer';
 import { coursesReducer } from './courses/reducer';
 import { authorsReducer } from './authors/reducer';
@@ -13,7 +14,7 @@ const rootReducer = combineReducers({
 
 const middleware = [ReduxThunk];
 
-export const store = legacy_createStore(
+export const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(...middleware))
 );

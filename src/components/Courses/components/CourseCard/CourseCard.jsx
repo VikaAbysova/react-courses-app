@@ -6,7 +6,7 @@ import { Button } from 'common/Button/Button';
 import { BsPencilFill } from 'react-icons/bs';
 import { IoTrashSharp } from 'react-icons/io5';
 import { getUser } from 'store/selectors';
-import * as ApiServices from 'store/services';
+import * as ApiServices from 'store/api/services';
 import { getCoursesAll } from 'store/courses/thunk';
 import './courseCard.scss';
 import { dateGenerator } from 'helpers/dateGenerator';

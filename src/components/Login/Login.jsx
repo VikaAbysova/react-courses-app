@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Input } from 'common/Input/Input';
 import { Button } from 'common/Button/Button';
-import * as ApiServices from 'store/services';
+import * as ApiServices from 'store/api/services';
 import { useDispatch } from 'react-redux';
 import { userLoginAction } from 'store/user/actionCreators';
 import './login.scss';

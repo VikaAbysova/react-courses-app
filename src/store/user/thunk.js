@@ -1,7 +1,8 @@
+import { BASE_URL } from 'contstants';
 import { CURRENT_USER } from './actionTypes';
 
 export const currentUser = () => async (dispatch) => {
-  const url = 'http://localhost:4000/users/me';
+  const url = `http://${BASE_URL}:4000/users/me`;
   const setHeaders = {
     headers: {
       Authorization: localStorage.token,

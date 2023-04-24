@@ -6,7 +6,7 @@ import { Logo } from './components/Logo/Logo';
 import { useDispatch, useSelector } from 'react-redux';
 import { userLogoutAction } from 'store/user/actionCreators';
 import { getUser } from 'store/selectors';
-import * as ApiServices from 'store/services';
+import * as ApiServices from 'store/api/services';
 import './header.scss';
 
 export const Header = () => {

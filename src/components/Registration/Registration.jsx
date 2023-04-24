@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from 'common/Button/Button';
 import { Input } from 'common/Input/Input';
-import * as ApiServices from 'store/services';
+import * as ApiServices from 'store/api/services';
 import './registration.scss';
 
 export const Registration = () => {

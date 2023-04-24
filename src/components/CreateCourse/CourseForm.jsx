@@ -9,7 +9,7 @@ import {
   reducerCreateCourse,
 } from './common/reducerCreateCourse';
 import * as Actions from './common/actionsCreateCourse';
-import * as ApiServices from 'store/services';
+import * as ApiServices from 'store/api/services';
 import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthors, getCourses } from 'store/selectors';
