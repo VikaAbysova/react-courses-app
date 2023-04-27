@@ -5,11 +5,13 @@ import PropTypes from 'prop-types';
 import { Button } from 'common/Button/Button';
 import { BsPencilFill } from 'react-icons/bs';
 import { IoTrashSharp } from 'react-icons/io5';
+import { getCourses } from 'store/selectors';
 import { getUser } from 'store/selectors';
 import * as ApiServices from 'store/api/services';
 import { getCoursesAll } from 'store/courses/thunk';
 import './courseCard.scss';
 import { dateGenerator } from 'helpers/dateGenerator';
+import { emptyCoursesAction } from 'store/courses/actionCreators';
 
 export const CourseCard = ({
   id,
@@ -18,26 +20,29 @@ export const CourseCard = ({
   creationDate,
   duration,
   authorsNames,
-  setCoursesStatus,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userRole = useSelector(getUser).role;
+  const courses = useSelector(getCourses);
 
   const showCourse = () => navigate(`/courses/${id}`);
 
   const updateCourse = () => navigate(`/courses/update/${id}`);
 
   const deleteCourse = async () => {
-    const deletedCourseRequest = await ApiServices.deleteCourse(id);
-    // setCoursesStatus();
-    if (deletedCourseRequest.successful) {
-      dispatch(getCoursesAll());
+    if (courses.length >= 2) {
+      const deletedCourseRequest = await ApiServices.deleteCourse(id);
+      if (deletedCourseRequest.successful) {
+        dispatch(getCoursesAll());
+      }
     }
+    dispatch(emptyCoursesAction([]));
   };
 
+  console.log(courses);
   return (
-    <article className="course_card">
+    <article data-testid="course-card" className="course_card">
       <section>
         <h1>{title}</h1>
         <p role="textbox">{description}</p>
@@ -77,5 +82,4 @@ CourseCard.propTypes = {
   creationDate: PropTypes.string,
   duration: PropTypes.string,
   authorsNames: PropTypes.arrayOf(PropTypes.string),
-  setCoursesStatus: PropTypes.func,
 };

@@ -1,5 +1,6 @@
 import {
   DELETE_COURSE,
+  EMPTY_COURSES,
   GET_COURSES,
   SAVE_COURSE,
   UPDATE_COURSE,
@@ -16,3 +17,8 @@ export const updateCourseAction = (payload) => ({
   payload,
 });
 export const getCoursesAction = (payload) => ({ type: GET_COURSES, payload });
+
+export const emptyCoursesAction = (payload) => ({
+  type: EMPTY_COURSES,
+  payload,
+});

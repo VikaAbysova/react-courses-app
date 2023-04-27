@@ -3,6 +3,7 @@ import {
   GET_COURSES,
   DELETE_COURSE,
   UPDATE_COURSE,
+  EMPTY_COURSES,
 } from './actionTypes';
 
 export const coursesInitialState = [];
@@ -16,6 +17,8 @@ export const coursesReducer = (state = coursesInitialState, action) => {
     case UPDATE_COURSE:
       return [...action.payload];
     case DELETE_COURSE:
+      return [...action.payload];
+    case EMPTY_COURSES:
       return [...action.payload];
     default:
       return state;

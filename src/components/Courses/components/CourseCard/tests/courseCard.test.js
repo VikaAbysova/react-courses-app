@@ -2,9 +2,9 @@ import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { CourseCard } from '../CourseCard';
 import { renderWithContext } from 'jest-data/renderWithContext';
-import { storeMocked } from 'jest-data/mockedData';
 import { pipeDuration } from 'helpers/pipeDuration';
 import { dateGenerator } from 'helpers/dateGenerator';
+import { storeInst } from 'jest-data/mockedData';
 
 describe('COURSE CARD', () => {
   beforeEach(() => {
@@ -16,7 +16,7 @@ describe('COURSE CARD', () => {
         authorsNames={['Vika', 'Kolya', 'Sasha']}
         creationDate={dateGenerator('21/04/2023')}
       />,
-      storeMocked
+      storeInst
     );
   });
 

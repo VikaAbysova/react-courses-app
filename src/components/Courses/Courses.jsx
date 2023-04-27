@@ -7,8 +7,8 @@ import { pipeDuration } from 'helpers/pipeDuration';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthors, getUser, getCourses } from 'store/selectors';
 import { currentUser } from 'store/user/thunk';
-import { getCoursesAll } from 'store/courses/thunk';
 import { getAuthorsAll } from 'store/authors/thunk';
+import { getCoursesAll } from 'store/courses/thunk';
 import './courses.scss';
 
 export const Courses = () => {
@@ -24,19 +24,13 @@ export const Courses = () => {
     dispatch(currentUser());
     navigate('/courses/add');
   };
-  const getCoursesList = () => {
-    dispatch(getCoursesAll());
-  };
-  const getAuthorthList = () => {
-    dispatch(getAuthorsAll());
-  };
 
   useEffect(() => {
     if (!authors.length) {
-      getAuthorthList();
+      dispatch(getAuthorsAll());
     }
-    if (!courses.length) {
-      getCoursesList();
+    if (!courses.length && userRole === 'user') {
+      dispatch(getCoursesAll());
     }
   }, [authors, courses]);
 
@@ -49,19 +43,20 @@ export const Courses = () => {
             Add new course
           </Button>
         </div>
-        {courses.map((course) => {
-          const authorsNames = course.authors.map(
-            (id) => authors.find((author) => author.id === id).name
-          );
-          return (
-            <CourseCard
-              key={course.id}
-              {...course}
-              authorsNames={authorsNames}
-              duration={pipeDuration(course.duration)}
-            />
-          );
-        })}
+        {courses.length >= 1 &&
+          courses.map((course) => {
+            const authorsNames = course.authors.map(
+              (id) => authors.find((author) => author.id === id).name
+            );
+            return (
+              <CourseCard
+                key={course.id}
+                {...course}
+                authorsNames={authorsNames}
+                duration={pipeDuration(course.duration)}
+              />
+            );
+          })}
       </main>
     </>
   );
