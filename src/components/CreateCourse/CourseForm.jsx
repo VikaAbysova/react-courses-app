@@ -147,7 +147,7 @@ export const CourseForm = () => {
   };
 
   return (
-    <article className="creating-course">
+    <article data-testid="course-form" className="creating-course">
       <form>
         <div className="creating-bar">
           <div>

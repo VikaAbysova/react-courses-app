@@ -6,7 +6,6 @@ import { Button } from 'common/Button/Button';
 import { pipeDuration } from 'helpers/pipeDuration';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthors, getUser, getCourses } from 'store/selectors';
-import { currentUser } from 'store/user/thunk';
 import { getAuthorsAll } from 'store/authors/thunk';
 import { getCoursesAll } from 'store/courses/thunk';
 import './courses.scss';
@@ -20,8 +19,7 @@ export const Courses = () => {
   const disabled = userRole === 'admin' ? false : true;
   const idBtn = userRole !== 'admin' ? 'not-allowed' : 'pointer';
 
-  const callCurrentUser = () => {
-    dispatch(currentUser());
+  const showCourseForm = () => {
     navigate('/courses/add');
   };
 
@@ -39,7 +37,7 @@ export const Courses = () => {
       <main className="courses">
         <div className="actions">
           <SearchBar previousCourses={courses} />
-          <Button onClick={callCurrentUser} disabled={disabled} id={idBtn}>
+          <Button onClick={showCourseForm} disabled={disabled} id={idBtn}>
             Add new course
           </Button>
         </div>

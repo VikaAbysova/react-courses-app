@@ -4,6 +4,8 @@ export const mockedState = {
   user: {
     isAuth: true,
     name: 'Test name',
+    email: 'admin@email.com',
+    role: 'admin',
   },
   courses: [
     {
@@ -41,15 +43,6 @@ export const mockedState = {
   ],
 };
 
-// export const mockedStore = {
-//   getState: () => mockedState,
-//   subscribe: jest.fn(),
-//   dispatch: jest.fn(),
-// };
-
 const middlewares = [];
 export const store = configureStore(middlewares);
-// export const storeMocked = store(mockedStore);
 export const storeInst = store(mockedState);
-// console.log('storeMocked', storeMocked.getState());
-console.log('storeInst in file', storeInst.getState());
